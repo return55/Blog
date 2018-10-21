@@ -1,1 +1,0 @@
-#ci mettero il commento modello

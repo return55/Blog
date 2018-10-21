@@ -25,17 +25,16 @@ def settings(request, id_autore):
 
 #mi manda sul form, poi da li vado in autore/aggiungi
 def scrivi(request, id_autore, messaggio=""):
-    #in qualche devo prendere id dell'autore
     categorie = Articolo.CATEGORIE_DISPONIBILI
     context = {
-        'id_autore' : 1,#da modificare con id autore
+        'id_autore' : id_autore,
         'categorie' : categorie,
         'messaggio': messaggio,
     }
     return render(request, 'autore/crea_articolo.html', context=context)
 
 
-def aggiungi(request, id_autore):
+def aggiungi_articolo(request, id_autore):
     autore = get_object_or_404(Autore, pk=id_autore)
     if request.method == 'POST':
         #controlli (da spostare su javascript)

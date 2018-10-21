@@ -2,7 +2,11 @@
 <p>{{ articolo.data }}</p>
 <div align="rigth" class="multiline">{{ articolo.testo }}</div>
 <br>
-<a style="font-size:20px" href="{% url 'autore:info_autore' autore.id %}">{{ autore.nick }}</a>
+<a style="font-size:20px" href="{% url 'autore:info' autore.id %}">{{ autore.nick }}</a>
 <br>
 {# sezione commenti #}
 {% include "articolo/commenti.html" with commenti=commenti only %}
+<form action="{% url 'articolo:aggiungi_commento' articolo.id %}" method="post">
+	{% csrf_token %}
+	<button type="submit">Commenta</button>
+</form>

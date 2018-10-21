@@ -1,6 +1,8 @@
 from django.db import models
+from django import forms
 from autore.models import Autore
 import datetime
+import re
 
 """
 DROP SCHEMA public CASCADE;
@@ -12,11 +14,18 @@ grant create on schema public to blog;
 """
 
 # Create your models here.
-class Keyword(models.Model):
-    keyword = models.CharField(max_length=20)
+class Keywords(forms.Field):
+    def to_python(self, value):
+        #per la normalizzazione: array di string separate da ',   '
+        if not value:
+            return []
+        return re.split(r',\\s+', value)
 
-    def __str__(self):
-        return self.keyword    
+    def validate(self, value):
+        #controllo del form
+        super().validate(value)
+
+
 
 class Articolo(models.Model):
     titolo =  models.CharField(max_length=200)
@@ -32,7 +41,7 @@ class Articolo(models.Model):
         ('VIAGGI', 'Viaggi'),
     )
     categoria = models.CharField(max_length=8, choices=CATEGORIE_DISPONIBILI)
-    #keywords = models.ManyToManyField(Keyword)
+    keywords = Keywords()
 
     def __str__(self):
         return self.titolo

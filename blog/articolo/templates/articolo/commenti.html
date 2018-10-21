@@ -1,0 +1,15 @@
+{# Passo il titolo quando voglio visualizzare solo i commenti di un articolo #}
+{% if titolo != '' %}
+	<h1 style="font-size:30px">{{ titolo }}</h1>
+{% endif %}
+<ul>
+	{% for commento in commenti %}
+		<li>
+			<label>{{ commento.commentatore }}</label>
+			<br>
+			<div align="rigth" class="multiline">{{ commento.testo }}</div>
+			<br>
+			{# devo usare un CSS: style="text-align:center" #}
+		</li>
+	{% endfor %}
+</ul>
