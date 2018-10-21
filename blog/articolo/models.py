@@ -2,13 +2,16 @@ from django.db import models
 from autore.models import Autore
 import datetime
 
+"""
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+"""
+"""
+grant usage on schema public to blog;
+grant create on schema public to blog;
+"""
+
 # Create your models here.
-class Categoria(models.Model):
-    categoria = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.categoria
-
 class Keyword(models.Model):
     keyword = models.CharField(max_length=20)
 
@@ -20,7 +23,15 @@ class Articolo(models.Model):
     id_autore = models.ForeignKey(Autore, on_delete=models.CASCADE)
     testo = models.TextField() #max_length=10000
     data = models.DateField(default=datetime.date.today)
-    #categorie = models.ManyToManyField(Categoria)
+    CATEGORIE_DISPONIBILI =(
+        ('CINEMA', 'Cinema'),
+        ('SCIENZA', 'Scienza'),
+        ('SPORT', 'Sport'),
+        ('CUCINA', 'Cucina'),
+        ('POLITICA', 'Politica'),
+        ('VIAGGI', 'Viaggi'),
+    )
+    categoria = models.CharField(max_length=8, choices=CATEGORIE_DISPONIBILI)
     #keywords = models.ManyToManyField(Keyword)
 
     def __str__(self):
@@ -30,14 +41,6 @@ class Articolo(models.Model):
         get_latest_by  = '-data'
 
 """
-class Appartiene_a(models.Model):
-    id_articolo = models.ForeignKey(Articolo, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = (('id_articolo', 'categoria'),)
-        
-
 class Contiene(models.Model):
     id_articolo = models.ForeignKey(Articolo, on_delete=models.CASCADE)
     keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE)

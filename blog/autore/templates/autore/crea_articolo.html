@@ -1,0 +1,16 @@
+<h1>Scrivi un Nuovo Articolo</h1>
+
+{# In qualche modo dovro' prendere id autore #}
+<form action="{% url 'autore:aggiungi_articolo' id_autore %}" method="post">
+	{% csrf_token %}
+	<input type="text" name="titolo" placeholder="Titolo">
+	<br><br><br> {# metti del padding #}
+	<textarea name="testo" cols="120" rows="50"></textarea>
+	<br>
+	<p>A che categoria appartiene il tuo articolo?</p>
+	{% for inutile, cat   in categorie %}
+		<a>{{ cat }}</a><input type="radio" name="categoria" id="categoria{{ forloop.counter }}" value="{{ cat }}"> {# metti del padding #}
+	{% endfor %}
+	<br><br> {# metti del padding #}
+	<input type="submit" value="Conferma" style="color: darkblue">
+</form>

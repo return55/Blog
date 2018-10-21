@@ -8,7 +8,7 @@ class Autore(models.Model):
     cognome = models.CharField(max_length=20)
     nick = models.CharField(max_length=15, unique=True, help_text='Max 15 caratteri') #unico
     data_nascita = models.DateField() #anno/mese/giorno
-    email = models.CharField(max_length=50)
+    email = models.EmailField()
     password = models.CharField(max_length=20, help_text='Min 4 caratteri')
     bio = models.TextField(blank=True)
 
