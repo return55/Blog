@@ -1,9 +1,8 @@
-{% if autore %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>L'autore non e' disponibile.</p>
-{% endif %}
+<h1>{{ autore.nome }} {{ autore.cognome }}</h1>
+<p>Nick: {{ autore.nick }}</p>
+<p>Data Nascita: {{ autore.data_nascita|date:"d-m-Y" }}</p>
+<p>E-Mail: <E-Mail>{{ autore.email }}</E-Mail></p>
+<p>Bio:</p>
+<p><p>{{ autore.bio }}</p></p>
+    
+

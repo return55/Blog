@@ -1,0 +1,7 @@
+p.paragrafo_testo {
+	line-height:1.2em;
+	height:3.6em;
+	overflow:hidden;
+	white-space: pre-line;
+	font-size: 20cm
+}

@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('autore/', include('autore.urls')),
     path('logout/', logout_view , name='logout_view'),
+    path('articolo/', include('articolo.urls')),
 ]
 

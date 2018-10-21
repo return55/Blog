@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'articolo.apps.ArticoloConfig',
     'autore.apps.AutoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -125,4 +126,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
+
 
