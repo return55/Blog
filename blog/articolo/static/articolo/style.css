@@ -1,6 +1,32 @@
-/** Per info articolo */
+/** Per testo articolo (info.html)*/
 .multiline
-{
-  padding:20px;
+{ 
+  padding: 0px 0px 0px 10px;
   white-space: pre-wrap;
+  text-align: "left";
+  border-style:solid;
+  border-width: 2px;
+  background-clip: padding-box;
+  border-color:rgb(139, 121, 121);
+}
+ 
+.titolo
+{
+  font-size: 50px
+}
+/** per crea commento */
+input {
+  background: transparent;
+  border: none;
+}
+
+body {
+  background: white url("images/sfondo_articolo5.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  text-align:left;
+  width: 50%;
+  font-size: 20px
 }

@@ -1,6 +1,23 @@
 from django.contrib import admin
 from .models import Articolo, Commento
 
-# Register your models here.
-admin.site.register(Articolo)
-admin.site.register(Commento)
+class CommentoInline(admin.StackedInline):
+    model = Commento
+    extra = 1
+
+class ArticoloAdmin(admin.ModelAdmin):
+	fieldsets  = [
+		(None,		  {'fields': ['titolo', 'id_autore', 'testo', 'categoria']}),
+		('Opzionali', {'fields': ['keywords', 'citazioni']}),
+	]
+	inlines = [CommentoInline]
+	list_display = ('titolo', 'data', 'get_nick_autore')
+	list_filter = ['data']
+	search_fields = ['testo']
+
+
+class CommentoAdmin(admin.ModelAdmin):
+	fields = ['id_articolo', 'testo', 'commentatore']
+
+admin.site.register(Articolo, ArticoloAdmin)
+admin.site.register(Commento, CommentoAdmin)

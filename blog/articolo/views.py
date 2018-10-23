@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from autore.models import Autore
 from articolo.models import Articolo, Commento
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import FormCommento
+from .forms import FormCommento_ConNick, FormCommento_NoNick
 from django.contrib import messages
 from django.urls import reverse
 
@@ -55,19 +55,28 @@ def commenti(request, id_articolo, titolo=False):
     }
     return render(request, 'articolo/commenti.html', context=context)
 
+#Se l'utente e' autenticato setto il nick qui e gli mostro un form senza nick.
+#Altrimenti gli mostro il form col nick
 def aggiungi_commento(request, id_articolo):
     if request.method == 'GET':
-        form = FormCommento()
-        return render(request, 'articolo/crea_commento.html', { 'form': form,})
+        if request.user.is_authenticated():
+            return render(request, 'articolo/crea_commento.html', { 'form': FormCommento_ConNick(initial={'nick': 1}),})         
+        else:
+            return render(request, 'articolo/crea_commento.html', { 'form': FormCommento_ConNick(),})
     else:
         c = FormCommento(request.POST)
         #controlla perche' il form non funziona
         if c.is_valid():
+            if request.user.is_authenticated():
+                x=1
+            else:
+                x=1
             nuovo_comm = c.save()
             messages.success(request, 'Commento creato correttamente')
             return HttpResponseRedirect(reverse('articolo:info', args=(id_articolo)))
         else:
-            return HttpResponse(c.errors)
+
+            return HttpResponse(c.errors.as_text())
 
 
 
