@@ -64,13 +64,13 @@ def aggiungi_commento(request, id_articolo):
         else:
             return render(request, 'articolo/crea_commento.html', { 'form': FormCommento_ConNick(),})
     else:
-        c = FormCommento(request.POST)
+        if request.user.is_authenticated():
+            c = FormCommento_NoNick(request.POST)
+        else:
+            c = FormCommento_ConNick(request.POST)
         #controlla perche' il form non funziona
         if c.is_valid():
-            if request.user.is_authenticated():
-                x=1
-            else:
-                x=1
+            
             nuovo_comm = c.save()
             messages.success(request, 'Commento creato correttamente')
             return HttpResponseRedirect(reverse('articolo:info', args=(id_articolo)))
