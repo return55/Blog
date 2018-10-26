@@ -1,6 +1,8 @@
 from django.shortcuts import render, loader, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.models import User
+
 
 from .models import Autore
 from articolo.models import Articolo
@@ -10,12 +12,12 @@ from articolo.models import Articolo
 
 #Dovrebbe essere vuota, redirigo sul login
 def index(request):
-    return HttpResponseRedirect("1/") 
+    return HttpResponseRedirect("2/") 
 
 #Mostro le info sull'autore e i link agli articoli
 def info(request, id_autore):
     autore = get_object_or_404(Autore, pk=id_autore)
-    articoli = get_list_or_404(Articolo, id_autore=id_autore)
+    articoli = Articolo.objects.filter(id_autore=id_autore)
     template = loader.get_template('autore/info.html')
     context = {
         'autore': autore,

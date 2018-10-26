@@ -1,8 +1,21 @@
-<h1>{{ autore.user.first_name }} {{ autore.cognome }}</h1>
-<p>Nick: {{ autore.nick }}</p>
-<p>Data Nascita: {{ autore.data_nascita|date:"d-m-Y" }}</p>
-<p>E-Mail: <E-Mail>{{ autore.email }}</E-Mail></p>
+{% if autore.get_nome %}
+    <h1>{{ autore.get_nome }} {{ autore.get_cognome }}</h1>
+{% else %}
+    <br>
+{% endif %}
+<p>Nick: {{ autore.get_nick }}</p>
+<p>Data Registrazione: {{ autore.data_registrazione|date:"d-m-Y" }}</p>
+<p>E-Mail: <E-Mail>{{ autore.get_email }}</E-Mail></p>
 <p>Bio:</p>
 <p><p>{{ autore.bio }}</p></p>
+{# link degli articoli #}
+<h2>Articoli Scritti:</h2>
+<ul>
+    {% for articolo in articoli %}
+        <li>
+            <a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
+        </li>
+    {% endfor %}
+</ul>
     
 

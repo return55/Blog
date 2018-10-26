@@ -16,7 +16,7 @@ class Autore(models.Model):
 
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name + ", " + self.user.username
-    
+
     def get_nome(self):
         return self.user.first_name
 
