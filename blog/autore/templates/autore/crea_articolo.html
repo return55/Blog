@@ -1,16 +1,28 @@
-<h1>Scrivi un Nuovo Articolo</h1>
+{% load static %}
 
-{# In qualche modo dovro' prendere id autore #}
-<form action="{% url 'autore:aggiungi_articolo' id_autore %}" method="post">
-	{% csrf_token %}
-	<input type="text" name="titolo" placeholder="Titolo">
-	<br><br><br> {# metti del padding #}
-	<textarea name="testo" cols="120" rows="50"></textarea>
-	<br>
-	<p>A che categoria appartiene il tuo articolo?</p>
-	{% for inutile, cat   in categorie %}
-		<a>{{ cat }}</a><input type="radio" name="categoria" id="categoria{{ forloop.counter }}" value="{{ cat }}"> {# metti del padding #}
-	{% endfor %}
-	<br><br> {# metti del padding #}
-	<input type="submit" value="Conferma" style="color: darkblue">
-</form>
+<head>
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+	<h1>Scrivi un Nuovo Articolo</h1>
+
+	{# In qualche modo dovro' prendere id autore #}
+	<form action="{% url 'autore:aggiungi_articolo' id_autore %}" method="post">
+		{% csrf_token %}
+		<input type="text" name="titolo" placeholder="Titolo">
+		<br><br><br> {# metti del padding #}
+		<textarea name="testo" cols="120" rows="50"></textarea>
+		<br>
+		<p>A che categoria appartiene il tuo articolo?</p>
+		{% for inutile, cat   in categorie %}
+			<a>{{ cat }}</a><input type="radio" name="categoria" id="categoria{{ forloop.counter }}" value="{{ cat }}"> {# metti del padding #}
+		{% endfor %}
+		<br><br> {# metti del padding #}
+		<input type="submit" value="Conferma" style="color: darkblue">
+	</form>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+

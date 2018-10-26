@@ -33,8 +33,11 @@ class Articolo(models.Model):
     categoria = models.CharField(max_length=8, choices=CATEGORIE_DISPONIBILI, help_text="Categoria")
     citazioni = models.ManyToManyField('self', blank=True, symmetrical=False)
 
+    class Meta:
+        verbose_name_plural = 'Articoli'
+
     def get_nick_autore(self):
-        return self.id_autore.nick
+        return Autore.objects.get(pk=self.id_autore).get_nick()
     get_nick_autore.boolean = False
     get_nick_autore.short_description = 'Nick Autore'
     
@@ -53,6 +56,8 @@ class Commento(models.Model):
 
     class Meta:
         unique_together = (('id_articolo', 'id'),)
+        verbose_name_plural = 'Commenti'
+
 
     def __str__(self):
         return self.id_articolo.titolo + " " + self.commentatore

@@ -1,5 +1,7 @@
 from django.shortcuts import render, loader, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+
 from .models import Autore
 from articolo.models import Articolo
 
@@ -10,18 +12,20 @@ from articolo.models import Articolo
 def index(request):
     return HttpResponseRedirect("1/") 
 
+#Mostro le info sull'autore e i link agli articoli
 def info(request, id_autore):
     autore = get_object_or_404(Autore, pk=id_autore)
-    #articoli = get_list_or_404(A)
+    articoli = get_list_or_404(Articolo, id_autore=id_autore)
     template = loader.get_template('autore/info.html')
     context = {
         'autore': autore,
+        'articoli': articoli,
     }
     return HttpResponse(template.render(context, request))
 
 #da fare
 def settings(request, id_autore):
-    return HttpResponse("modifica info sull'autore " + (Autore.objects.get(pk=id_autore)).__str__())
+    return HttpResponse("modifica info sull'autore " + Autore.objects.get(pk=id_autore).__str__())
 
 #mi manda sul form, poi da li vado in autore/aggiungi
 def scrivi(request, id_autore, messaggio=""):

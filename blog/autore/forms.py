@@ -3,12 +3,12 @@ from .models import Autore
 from django.contrib.auth.models import User
 
 #forse devo aggiungere la password
-class UserForm(forms.ModelForm):
+class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
 
-class AutoreForm(forms.ModelForm):
+class AutoreForm(ModelForm):
     class Meta:
         model = Autore
-        fields = ('bio')
+        fields = ('bio', 'profilo_pubblico')
