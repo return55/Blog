@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+app_name = 'blog'
+
 urlpatterns = [
     path('', views.index, name='main'),
     path('admin/', admin.site.urls),
     path('autore/', include('autore.urls')),
-    path('logout/', views.logout_view , name='logout_view'),
+    path('logout/', views.logout_view , name='logout'),
     path('articolo/', include('articolo.urls')),
+    path('login/', views.login, name='login'),
 ]
 

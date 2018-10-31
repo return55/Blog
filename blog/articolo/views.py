@@ -78,5 +78,15 @@ def aggiungi_commento(request, id_articolo):
 
             return HttpResponse(c.errors.as_text())
 
+#Mostro tutti gli articoli
+def tutti(request):
+    #aggiungi tutti gli articoli alla request
+    context = None
+    return render(request, 'articolo/tutti.html', context=context)
 
+def cerca(request):
+    return render(request, 'articolo/cerca.html')
 
+def filtro_categoria(request, categoria):
+    #controlla che la categoria sia valida
+    return render(request, 'articolo/filtro_categoria.html', context={ 'categoria': categoria })

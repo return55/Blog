@@ -35,6 +35,7 @@ class Articolo(models.Model):
     citazioni = models.ManyToManyField('self', blank=True, symmetrical=False)
 
     class Meta:
+        get_latest_by  = '-data'
         verbose_name_plural = 'Articoli'
 
     def get_nick_autore(self):
@@ -45,9 +46,6 @@ class Articolo(models.Model):
     #r',\\s+'
     def __str__(self):
         return self.titolo
-
-    class Meta:
-        get_latest_by  = '-data'
 
 class Commento(models.Model):
     id_articolo = models.ForeignKey(Articolo, on_delete=models.CASCADE)

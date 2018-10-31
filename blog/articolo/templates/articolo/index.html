@@ -1,23 +1,31 @@
-{% load static %}
-<link rel="stylesheet" href="{% static user_stylesheet %}" type="text/css" media="screen">
+{% extends "blog/base.html" %} 
 
-{# Tutto e' una lista di tuple: (articolo, autore) #}
-{% if tutto %}
-    <h1  style="color:brown">Articoli Piu' Recenti</h1>
-    <ul>
-    {% for articolo, autore in tutto %}
-        <li>
-            <p>
-                {# URL non piu' hardcoded #}
-				<a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
-				<span style="display:inline-block; width: 20;"></span>
-                <a >({{ articolo.data|date:"d-m-Y" }})</a>
-			</p>
-			<p style="font-size:20px" class='paragrafo_testo'>{{ articolo.testo }}</p>
-			<p style="font-family:cursive">{{autore.nick}}</p> 
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Al momento non sono presenti articoli.</p>
-{% endif %}
+{% block head %}
+    {% block title %}Home {% endblock title %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static user_stylesheet %}" type="text/css" media="screen">
+{% endblock %} 
+
+{% block body %} 
+    {# Tutto e' una lista di tuple: (articolo, autore) #}
+    {% if tutto %}
+        <h1  style="color:brown">Articoli Piu' Recenti</h1>
+        <ul>
+        {% for articolo, autore in tutto %}
+            <li>
+                <p>
+                    {# URL non piu' hardcoded #}
+                    <a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
+                    <span style="display:inline-block; width: 20;"></span>
+                    <a >({{ articolo.data|date:"d-m-Y" }})</a>
+                </p>
+                <p style="font-size:20px" class='paragrafo_testo'>{{ articolo.testo }}</p>
+                <p style="font-family:cursive">{{autore.nick}}</p> 
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Al momento non sono presenti articoli.</p>
+    {% endif %}
+{% endblock %}
+
