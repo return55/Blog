@@ -1,7 +1,7 @@
-{% extends "blog/base.html" %} 
+{% extends "base.html" %} 
 
 {% block head %}
-    {% block title %}Home {% endblock title %}
+    <title>{% block title %}Home {% endblock title %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static user_stylesheet %}" type="text/css" media="screen">
 {% endblock %} 
