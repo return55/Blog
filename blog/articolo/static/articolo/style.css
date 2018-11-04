@@ -1,13 +1,13 @@
-/** Per testo articolo (info.html)*/
+/** Per testo articolo (info.html) e biografia*/
 .multiline
 { 
   padding: 0px 0px 0px 10px;
   white-space: pre-wrap;
   text-align: "left";
   border-style:solid;
-  border-width: 2px;
+  border-width: 1px;
   background-clip: padding-box;
-  border-color:rgb(139, 121, 121);
+  border-color:rgb(136, 130, 130);
 }
  
 .titolo
@@ -19,14 +19,22 @@ input {
   background: transparent;
   border: none;
 }
-
-body {
-  background: white url("images/sfondo_articolo5.jpg") no-repeat center center fixed; 
+/* index autori immagine */
+div.contanier {
+  background: rgb(158, 31, 31) url("images/sfondo_articolo5.jpg") no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  text-align:left;
-  width: 50%;
-  font-size: 20px
+  width: 100%;
+  height: auto;
 }
+/* index articoli */
+.div-index {  
+  width: 50%;
+  font-size: 20px;
+	border: 1px solid white;
+	text-align: center;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	}

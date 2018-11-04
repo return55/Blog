@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+
+{% block head %}
+    <title>{% block title %}Registrazione {% endblock title %}</title>
+{% endblock %} 
+
+{% block body %}
+<div class="container ml-auto ">
+    <form action="{% url 'registrazione' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Conferma">
+    </form>
+</div>
+    
+
+{% endblock body %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %} 
+
+{% block head %}
+    <title>{% block title %}Commenta {% endblock title %}</title>
+{% endblock %} 
+
+{% block body %}	
+	<form action="{% url 'articolo:aggiungi_commento' id_articolo %}" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<br><br>
+		<input type="submit" value="CREA" />
+	</form>
+
+{% endblock body %}

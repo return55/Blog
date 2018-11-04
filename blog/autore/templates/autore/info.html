@@ -1,21 +1,38 @@
-{% if autore.get_nome %}
-    <h1>{{ autore.get_nome }} {{ autore.get_cognome }}</h1>
-{% else %}
-    <br>
-{% endif %}
-<p>Nick: {{ autore.get_nick }}</p>
-<p>Data Registrazione: {{ autore.data_registrazione|date:"d-m-Y" }}</p>
-<p>E-Mail: <E-Mail>{{ autore.get_email }}</E-Mail></p>
-<p>Bio:</p>
-<p><p>{{ autore.bio }}</p></p>
-{# link degli articoli #}
-<h2>Articoli Scritti:</h2>
-<ul>
-    {% for articolo in articoli %}
-        <li>
-            <a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
-        </li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %} 
+
+{% block head %}
+    <title>{% block title %}Autore {% endblock title %}</title>
+    
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">
+{% endblock %} 
+
+{% block body %}
+<div id="info_autore" class="container">
+    {% if autore.first_name %}
+        <h1>{{ autore.first_name }} {{ autore.last_name }}</h1>
+    {% else %}
+        <br>
+    {% endif %}
+    <p>Nick: {{ autore.username }}</p>
+    <p>Data Registrazione: {{ autore.data_registrazione|date:"d-m-Y" }}</p>
+    <p>E-Mail: <E-Mail>{{ autore.email }}</E-Mail></p>
+    <p>Biografia:</p>
+    <p><p>
+    <textarea class="multiline" rows="8" cols="50" readonly>
+        {{ autore.bio }}
+    </textarea>
+    </p></p>
+    {# link degli articoli #}
+    <h2>Articoli Scritti:</h2>
+    <ul>
+        {% for articolo in articoli %}
+            <li>
+                <a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock body %}
     
 

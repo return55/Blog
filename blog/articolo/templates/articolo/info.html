@@ -1,16 +1,18 @@
-{% load static %}
+{% extends "base.html" %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">
+{% block body %}
+	<link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">
 
-<h1 class="titolo">{{ articolo.titolo }}</h1> {# dovro' centrarlo #}
-<p>{{ articolo.data }}</p>
-<div class="multiline">{{ articolo.testo }}</div>
-<br>
-<a style="font-size:20px" href="{% url 'autore:info' autore.id %}">{{ autore.nick }}</a>
-<br>
-{# sezione commenti #}
-{% include "articolo/commenti.html" with commenti=commenti only %}
-<form action="{% url 'articolo:aggiungi_commento' articolo.id %}" method="get">
-	{% csrf_token %}
-	<button type="submit">Commenta</button>
-</form>
+	<h1 class="titolo">{{ articolo.titolo }}</h1> {# dovro' centrarlo #}
+	<p>{{ articolo.data }}</p>
+	<div class="multiline">{{ articolo.testo }}</div>
+	<br>
+	<a style="font-size:20px" href="{% url 'autore:info' autore.id %}">{{ autore.nick }}</a>
+	<br>
+	{# sezione commenti #}
+	{% include "articolo/commenti.html" with commenti=commenti only %}
+	<form action="{% url 'articolo:aggiungi_commento' articolo.id %}" method="get">
+		{% csrf_token %}
+		<button type="submit">Commenta</button>
+	</form>
+{% endblock body %}
