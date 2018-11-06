@@ -22,6 +22,22 @@
 							</li>
 							<li class="nav-item active dropdown">
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Autore <span class="sr-only">(current)</span>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<a class="dropdown-item" href="{% url 'autore:tutti' %}">Tutti</a>
+									<a class="dropdown-item" href="{% url 'autore:cerca' %}">Ricerca Autore</a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="{% url 'registrazione' %}">Registrazione</a>
+									{% if request.user.is_authenticated %}
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="{% url 'autore:info' user.id %}">Info Personali</a>
+									<a class="dropdown-item" href="{% url 'autore:settings' user.id %}">Settings</a>
+									{% endif %}
+								</div>
+							</li>
+							<li class="nav-item active dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Articoli
 							</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -39,30 +55,6 @@
 											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Viaggi' %}">Viaggi</a></li>
 										</ul>
 									</a>
-								</div>
-							</li>
-							<li class="nav-item active dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Autore <span class="sr-only">(current)</span>
-								</a>
-								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<a class="dropdown-item" href="{% url 'autore:tutti' %}">Tutti</a>
-									<a class="dropdown-item" href="{% url 'autore:cerca' %}">Ricerca Autore</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="{% url 'registrazione' %}">Registrazione</a>
-									{# drpdown se serve 
-									<a class="dropdown-submenu">
-										<a href="#" class="dropdown-item dropdown-toggle" data-toggle="dropdown">Categorie</a>
-										<ul class="dropdown-menu">
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Cinema' %}">Cinema</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Scienza' %}">Scienza</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Sport' %}">Sport</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Cucina' %}">Cucina</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Politica' %}">Politica</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Viaggi' %}">Viaggi</a></li>
-										</ul>
-									</a>
-									#}
 								</div>
 							</li>
 						{# devo mettere la post alla ricerca #}

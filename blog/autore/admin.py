@@ -3,11 +3,13 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import  UserAdminChangeForm, RegisterForm
+
 from .models import Autore
 
 # Register your models here.
 
 class UserAdmin(BaseUserAdmin):
+	
 	form = UserAdminChangeForm
 	add_form = RegisterForm
 
@@ -15,14 +17,14 @@ class UserAdmin(BaseUserAdmin):
 		(None, {'fields': ('username', 'password')}),
         ('Personal Info',{'fields': ('first_name', 'last_name', 'email')}),
 		('Altre', {'fields': ['bio', 'profilo_pubblico', 'data_registrazione']}),
-        ('Permissions', {'fields': ('is_admin',)}),
+        ('Permissions', {'fields': ('admin',)}),
 	]
 	add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'admin')}),
+            'fields': ('username', 'password1', 'password2', 'email', 'admin')}),
     )
-	readonly_fields = ['data_registrazione', 'is_admin']
+	readonly_fields = ['data_registrazione']
 	list_filter = ['data_registrazione']
 	list_display = ('username', 'data_registrazione', 'profilo_pubblico')
 	search_fields = ('username',)

@@ -28,3 +28,18 @@
 .btn-outline-success {
     background-color:#ece7e7;
 }
+
+.info_autore {
+    font-size: 20px;
+}
+
+.multiline
+{ 
+  padding: 0px 0px 0px 10px;
+  white-space: pre;
+  text-align: "left";
+  border-style:solid;
+  border-width: 1px;
+  background-clip: padding-box;
+  border-color:rgb(28, 6, 150);
+}

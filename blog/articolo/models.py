@@ -30,7 +30,7 @@ class Articolo(models.Model):
         ('POLITICA', 'Politica'),
         ('VIAGGI', 'Viaggi'),
     )
-    keywords = ArrayField(models.CharField(max_length=15, blank=True), max_length=10, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
+    keywords = ArrayField(models.CharField(max_length=15), blank=True, max_length=10, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
     categoria = models.CharField(max_length=8, choices=CATEGORIE_DISPONIBILI, help_text="Categoria")
     citazioni = models.ManyToManyField('self', blank=True, symmetrical=False)
 
@@ -39,7 +39,7 @@ class Articolo(models.Model):
         verbose_name_plural = 'Articoli'
 
     def get_nick_autore(self):
-        return Autore.objects.get(pk=self.id_autore).get_nick()
+        return self.id_autore.username
     get_nick_autore.boolean = False
     get_nick_autore.short_description = 'Nick Autore'
     

@@ -12,14 +12,21 @@ class RegisterForm(forms.ModelForm):
 
 	class Meta:
 		model = Autore
-		fields = ('username', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico')
+		fields = ('username', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico', 'admin')
 
 	def clean_username(self):
 		username = self.cleaned_data.get('username')
 		qs = Autore.objects.filter(username=username)
 		if qs.exists():
-			raise forms.ValidationError("username gia' in uso")
+			raise forms.ValidationError("username gia in uso")
 		return username
+
+	def clean_email(self):
+		email = self.cleaned_data.get('email')
+		qs = Autore.objects.filter(email=email)
+		if qs.exists():
+			raise forms.ValidationError("email gia' in uso")
+		return email
 
 	def clean_password2(self):
 		# Check that the two password entries match
@@ -48,6 +55,13 @@ class UserAdminChangeForm(forms.ModelForm):
 	class Meta:
 		model = Autore
 		fields = ('username', 'password', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico', 'active', 'admin')
+
+	def clean_username(self):
+		username = self.cleaned_data.get('username')
+		qs = Autore.objects.filter(username=username)
+		if qs.exists():
+			raise forms.ValidationError("username gia in uso")
+		return username
 
 	def clean_email(self):
 		email = self.cleaned_data.get('email')
@@ -102,17 +116,35 @@ class RegistrationForm(forms.ModelForm):
 		if commit:
 			user.save()
 		return user
-
+	
 	class Meta:
 		model = Autore
 		fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico')
 
-class FormCommento_NoNick(ModelForm):
-	class Meta:
-		model = Commento
-		fields = ['testo']
+class SettingsForm(forms.ModelForm):
+	username = forms.CharField(max_length=20)
+	email = forms.EmailField(widget=forms.EmailInput)
+	first_name = forms.CharField(label='Nome',max_length=20)
+	last_name = forms.CharField(label='Cognome',max_length=20)
+	bio = forms.CharField(label='Biografia',widget=forms.Textarea, required=False)
+	profilo_pubblico = forms.BooleanField(required=False)
 
-class FormCommento_ConNick(ModelForm):
 	class Meta:
-		model = Commento
-		fields = ['testo', 'commentatore']
+		model = Autore
+		fields = ('username', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico')
+	"""controllli da fare come script
+	def clean_email(self):
+		email = self.cleaned_data.get('email')
+		qs = Autore.objects.filter(email=email)
+		if qs.exists():
+			raise forms.ValidationError("email gia' in uso")
+		return email
+
+	def clean_username(self):
+		username = self.cleaned_data.get('username')
+		qs = Autore.objects.filter(username='username')
+		if qs.exists():
+			raise forms.ValidationError("Username gia' in uso")
+		return username
+	"""
+

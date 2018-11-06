@@ -4,11 +4,11 @@
     <title>{% block title %}Autore {% endblock title %}</title>
     
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'autore/style.css' %}">
 {% endblock %} 
 
 {% block body %}
-<div id="info_autore" class="container">
+<div  class="container info_autore py-3 ml-5">
     {% if autore.first_name %}
         <h1>{{ autore.first_name }} {{ autore.last_name }}</h1>
     {% else %}
@@ -19,16 +19,14 @@
     <p>E-Mail: <E-Mail>{{ autore.email }}</E-Mail></p>
     <p>Biografia:</p>
     <p><p>
-    <textarea class="multiline" rows="8" cols="50" readonly>
-        {{ autore.bio }}
-    </textarea>
+    <textarea class="multiline" rows="8" cols="50" readonly>{{ autore.bio }}</textarea>
     </p></p>
     {# link degli articoli #}
     <h2>Articoli Scritti:</h2>
     <ul>
         {% for articolo in articoli %}
             <li>
-                <a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
+                <a style="font-size:20px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
             </li>
         {% endfor %}
     </ul>

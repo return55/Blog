@@ -1,4 +1,8 @@
 from django.contrib import admin
+
+from .forms import (
+	ArticoloAdminChange,
+) 
 from .models import Articolo, Commento
 
 class CommentoInline(admin.StackedInline):
@@ -6,6 +10,8 @@ class CommentoInline(admin.StackedInline):
     extra = 1
 
 class ArticoloAdmin(admin.ModelAdmin):
+	form = ArticoloAdminChange
+	
 	fieldsets  = [
 		(None,		  {'fields': ['titolo', 'id_autore', 'testo', 'categoria']}),
 		('Opzionali', {'fields': ['keywords', 'citazioni']}),
