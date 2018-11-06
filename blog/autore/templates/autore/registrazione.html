@@ -5,8 +5,8 @@
 {% endblock %} 
 
 {% block body %}
-<div class="container ml-auto ">
-    <form action="{% url 'registrazione' %}" method="post">
+<div class="container py-3 ml-5">
+    <form class="col-2" action="{% url 'registrazione' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Conferma">

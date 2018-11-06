@@ -125,7 +125,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ( os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = ( 
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'autore'),
+)
 
 LOGIN_URL = '/login/'
 
@@ -133,7 +136,6 @@ LOGIN_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'autore.Autore'
 
-#AUTH_PROFILE_MODULE = 'autore.Autore'
 
 
 

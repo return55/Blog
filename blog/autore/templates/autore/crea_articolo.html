@@ -12,7 +12,7 @@
 		{% csrf_token %}
 		<input type="text" name="titolo" placeholder="Titolo">
 		<br><br><br> {# metti del padding #}
-		<textarea name="testo" cols="120" rows="50"></textarea>
+		<textarea type="text" name="testo" cols="120" rows="50"></textarea>
 		<br>
 		<p>A che categoria appartiene il tuo articolo?</p>
 		{% for inutile, cat   in categorie %}

@@ -1,16 +1,18 @@
-from django.shortcuts import render, loader, get_object_or_404, get_list_or_404
+from django.shortcuts import render, loader, get_object_or_404, get_list_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Autore
 from articolo.models import Articolo
-from .forms import  FormCommento_ConNick, FormCommento_NoNick, UserAdminChangeForm, UserAdminCreationForm, RegisterForm
-
-
-# Create your views here.
+from .forms import  (
+    FormCommento_ConNick, FormCommento_NoNick, 
+    UserAdminChangeForm,  
+     RegistrationForm,
+)
 
 
 #Mostro le info sull'autore e i link agli articoli
@@ -36,7 +38,7 @@ def settings(request, id_autore):
             form = UserAdminChangeForm(request.POST, instance=request.user.profile)
             if form.is_valid():
                 form.save()
-                return reverse('autore:info', args=(id_autore))                
+                return reverse('autore:info', args=(id_autore,))                
         else:
             user = request.user
             profile = user.profile
@@ -89,26 +91,46 @@ def aggiungi_commento(request, id_articolo):
         if c.is_valid():
             nuovo_comm = c.save()
             messages.success(request, 'Commento creato correttamente')
-            return HttpResponseRedirect(reverse('articolo:info', args=(id_articolo)))
+            return HttpResponseRedirect(reverse('articolo:info', args=(id_articolo,)))
         else:
             return HttpResponse(c.errors.as_text())
 
 def registrazione(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = RegisterForm(request.POST)
+        form = RegistrationForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            form.save()
+            nuovo_utente = form.save()
             # redirect to a new URL:
-            messages.success(request, 'Grazie per la registrazione')
+            messages.info(request, 'Grazie per la registrazione')
+            nuovo_utente = authenticate(request, username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
+            login(request, nuovo_utente)
             #calcola id autore
-            return HttpResponseRedirect(reverse('autore:info', args=(Autore.objects.filter(nick=form.cleaned_data.get('username')).id)))
+            return redirect('autore:info', permanent=True, id_autore=Autore.objects.get(username=form.cleaned_data.get('username')).id)
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = RegisterForm()
+        form = RegistrationForm()
         return render(request, 'autore/registrazione.html', context={'form': form})
+
+#mostro tutti gli atori col profilo pubblico: nome, cognome che e' un link alla loro pagina
+#se riesco li rendo ordinabili per data iscrizione e ricerca per nome e cognome
+def tutti(request):
+    autori = Autore.objects.filter(profilo_pubblico=True)
+    if autori != None :
+        context = {
+            'autori' : autori,
+            'tutti' : True,
+        }
+        return render(request, 'autore/risultati_ricerca.html', context=context)
+    else:
+       messages.info(request, 'Purtroppo non ci sono autori con profili pubblici')
+       return render(request, 'autore/risultati_ricerca.html')
+
+#creo un form apposta e lo mando (get) al ritorno analizzo i risultati (post)
+def cerca(request):
+    return render(request, 'autore/cerca.html', context={})
 
 
 

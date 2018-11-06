@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 import datetime
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, password, first_name="", last_name="", email="email.email@email.com", bio="", profilo_pubblico=False, is_staff=True, is_admin=False, is_active=True):
+    def create_user(self, username, password, first_name="", last_name="", email="email.email@email.com", bio="", profilo_pubblico=False, staff=True, admin=False, active=True):
         if not password or not username:
             raise ValueError("Devi inserire sia username che password")
         user_obj = self.model(
@@ -20,9 +20,9 @@ class UserManager(BaseUserManager):
             profilo_pubblico=profilo_pubblico
         )
         user_obj.set_password(password)
-        user_obj.staff=is_staff
-        user_obj.admin=is_admin
-        user_obj.active=is_active
+        user_obj.staff=staff
+        user_obj.admin=admin
+        user_obj.active=active
         user_obj.save(using=self._db)
         return user_obj
         
@@ -30,10 +30,11 @@ class UserManager(BaseUserManager):
         user_obj = self.create_user(
             username,
             password,
-            first_name="Admin",
             email=email,
-            is_admin=True
         )
+        user_obj.admin=True
+        user_obj.staff=True
+        user_obj.active=True
         return user_obj
 
 

@@ -1,0 +1,52 @@
+{% extends "base.html" %} 
+
+{% block head %}
+	<title>{% block title %}Risultati {% endblock title %}</title>
+	{% load static from staticfiles%}
+    <link rel="stylesheet" type="text/css" href="{% static 'autore/style.css' %}">
+{% endblock %} 
+
+{% block body %}
+<div class="wrap py-3 mt-3  ml-5">
+	<div class="floatleft row mx-auto pt-5 pl-1">
+		{% for autore in autori %}
+			<a class="risultati " href="{% static 'autore/info.html' autore.id %}">
+				{{ autore.first_name }} {{ autore.last_name }}
+			</a>
+		{% endfor %}
+	</div>
+	<div class="floatright mx-0">
+		{# se vengo da tutti mostro le opzioni di ricerca per nome e cognome #}
+		{% if tutti %}
+			<h3 class="pl-2">Cerca un autore:</h2>
+			<form class="form-inline my-2 mx-2 form_tutti" action="{% url 'autore:cerca' %}" method="post">
+				{% csrf_token %}
+				<table>
+					<tr class="row">
+						<td class="col-3">Nome </td>
+						<td class="col-2">
+							<input class="form-control mr-sm-2" type="text" name="first_name" >
+						</td>
+					</tr>
+					<tr class="row mt-3">
+						<td class="col-3" >Cognome </td>
+						<td class="col-2">
+							<input class="form-control mr-sm-2" type="text" name="last_name" >
+						</td>
+					</tr>
+					<tr class="row mt-3">
+						<td class="col-2">
+							<button class="btn btn-outline-success " type="submit">Cerca</button>
+						</td>
+					</tr>						
+				</table>
+				
+			</form> 
+		{% endif %}
+	</div>
+	<div style="clear: both;"></div>
+</div>	
+
+    
+
+{% endblock body %}
