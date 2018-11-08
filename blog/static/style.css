@@ -5,3 +5,11 @@ p.paragrafo_testo {
 	white-space: pre-line;
 	font-size: 20cm
 }
+
+/* messaggi di errore, non funziona*/
+.sg-error-message,
+.sg-question-errorlist{
+	background: #FFC199; /*Change background color*/
+	border-left: 9px solid #FF6600; /*Change left border color*/
+	color: #2c3e50; /*Change text color*/
+}

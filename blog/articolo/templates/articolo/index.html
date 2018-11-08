@@ -8,14 +8,13 @@
 
 {% block body %}
 <header class="div-image">
-    <div class="container-fluid div-index">
+    <div class="container div-index">
         {# Tutto e' una lista di tuple: (articolo, autore) #}
         {% if tutto %}
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h1  style="color:brown">Articoli Piu' Recenti</h1>
-            <ul>
             {% for articolo, autore in tutto %}
-                <li>
+                <a>
                     <p>
                         {# URL non piu' hardcoded #}
                         <a style="font-size:30px" href="{% url 'articolo:info' articolo.id %}">{{ articolo.titolo }}</a>
@@ -23,10 +22,9 @@
                         <a >({{ articolo.data|date:"d-m-Y" }})</a>
                     </p>
                     <p style="font-size:20px" class='paragrafo_testo'>{{ articolo.testo }}</p>
-                    <p style="font-family:cursive">{{autore.nick}}</p> 
-                </li>
+                    <p style="font-family:cursive">{{autore.username}}</p> 
+                </a>
             {% endfor %}
-            </ul>
         </div>        
         {% else %}
         <div class="col-md-12">

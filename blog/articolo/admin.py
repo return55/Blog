@@ -14,11 +14,11 @@ class ArticoloAdmin(admin.ModelAdmin):
 	
 	fieldsets  = [
 		(None,		  {'fields': ['titolo', 'id_autore', 'testo', 'categoria']}),
-		('Opzionali', {'fields': ['keywords', 'citazioni']}),
+		('Opzionali', {'fields': ['keywords', 'cita']}),
 	]
 	inlines = [CommentoInline]
-	list_display = ('titolo', 'data', 'get_nick_autore')
-	list_filter = ['data']
+	list_display = ('titolo', 'data', 'get_nick_autore', 'citato')
+	list_filter = ['data', 'citato']
 	search_fields = ['testo']
 
 

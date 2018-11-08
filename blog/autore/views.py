@@ -70,9 +70,9 @@ def registrazione(request):
             login(request, nuovo_utente)
             #calcola id autore
             return redirect('autore:info', permanent=True, id_autore=Autore.objects.get(username=form.cleaned_data.get('username')).id)
-        else:
-            #alla get do un form pulito
-            form = RegistrationForm()
+    else:
+        #alla get do un form pulito
+        form = RegistrationForm()
     
     return render(request, 'autore/registrazione.html', context={'form': form})
     
