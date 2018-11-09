@@ -26,7 +26,7 @@ class UserAdmin(BaseUserAdmin):
     )
 	readonly_fields = ['data_registrazione']
 	list_filter = ['data_registrazione']
-	list_display = ('username', 'data_registrazione', 'profilo_pubblico')
+	list_display = ('username', 'data_registrazione', 'profilo_pubblico', 'admin', 'staff')
 	search_fields = ('username',)
 	ordering = ('data_registrazione', 'first_name')
 	filter_horizontal = ()

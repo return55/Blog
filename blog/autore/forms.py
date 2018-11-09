@@ -10,26 +10,7 @@ class BaseFormAutore(forms.ModelForm):
 	class Meta:
 		model = Autore
 		fields = ('username', 'email')
-
-	def clean_username(self):
-		username = self.cleaned_data.get('username')
-		qs = Autore.objects.filter(username=username)
-		if qs.exists():
-			raise forms.ValidationError("username gia in uso")
-		return username
-
-	def clean_email(self):
-		email = self.cleaned_data.get('email')
-		qs = Autore.objects.filter(email=email)
-		if qs.exists():
-			raise forms.ValidationError("email gia' in uso")
-		return email
-
-	def clean(self):
-		data = super(BaseFormAutore, self).clean()
-		self.clean_username()
-		self.clean_email()
-		return data
+	
 
 class RegisterForm(BaseFormAutore):
 	password1 = forms.CharField(label='Password',widget=forms.PasswordInput)
@@ -66,9 +47,6 @@ class UserAdminChangeForm(BaseFormAutore):
 	password hash display field.
 	"""
 	password = ReadOnlyPasswordHashField()
-	#sono disabilitati perche' non riesco a gestire il controllo della clean
-	username = forms.CharField(max_length=20, disabled=True)
-	email = forms.EmailField(widget=forms.EmailInput, disabled=True)
 
 	class Meta:
 		model = Autore
@@ -133,21 +111,4 @@ class SettingsForm(BaseFormAutore):
 
 	def clean(self):
 		return super(SettingsForm, self).clean()
-
-
-	"""controllli da fare come script perche devo sapere quale utente e' loggato
-	def clean_email(self):
-		email = self.cleaned_data.get('email')
-		qs = Autore.objects.filter(email=email)
-		if qs.exists():
-			raise forms.ValidationError("email gia' in uso")
-		return email
-
-	def clean_username(self):
-		username = self.cleaned_data.get('username')
-		qs = Autore.objects.filter(username=username)
-		if qs.exists():
-			raise forms.ValidationError("Username gia' in uso")
-		return username
-	"""
 

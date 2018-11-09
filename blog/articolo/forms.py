@@ -61,9 +61,9 @@ class ArticoloAddForm(GenericArticoloForm):
 	titolo =  forms.CharField(max_length=200)
 	id_autore = forms.ModelChoiceField(queryset=Autore.objects.all())
 	testo = forms.CharField(widget=forms.Textarea(), max_length=10000)
-	keywords = SimpleArrayField(forms.CharField(max_length=15), delimiter=', ', 
+	keywords = SimpleArrayField(forms.CharField(max_length=15), delimiter=',', 
 								required=False, max_length=10, 
-								help_text="Puoi inserire max 10 parole chiave per il tuo articolo separate da ', '")
+								help_text="Puoi inserire max 10 parole chiave per il tuo articolo separate da ','")
 	categoria = forms.ChoiceField(choices=Articolo.CATEGORIE_DISPONIBILI)
 	cita = forms.ModelMultipleChoiceField(queryset=Articolo.objects.all(), required=False)
 
