@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 import datetime
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, password, first_name="", last_name="", email="email.email@email.com", bio="", profilo_pubblico=False, staff=False, admin=False, active=True):
+    def create_user(self, username, password, first_name="", last_name="", email="email.email@email.com", bio="", profilo_pubblico=False, is_staff=False, is_admin=False, active=True):
         if not password or not username:
             raise ValueError("Devi inserire sia username che password")
         user_obj = self.model(
@@ -17,12 +17,11 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             bio=bio,
-            profilo_pubblico=profilo_pubblico
+            profilo_pubblico=profilo_pubblico,
+            is_active=True,
+            is_admin=is_admin,
         )
         user_obj.set_password(password)
-        user_obj.staff=admin
-        user_obj.admin=admin
-        user_obj.active=active
         user_obj.save(using=self._db)
         return user_obj
         
@@ -31,10 +30,9 @@ class UserManager(BaseUserManager):
             username,
             password,
             email=email,
+            is_admin=True
         )
-        user_obj.admin=True
-        user_obj.staff=True
-        user_obj.active=True
+        user_obj.is_active=True
         return user_obj
 
 
@@ -48,9 +46,9 @@ class Autore(AbstractBaseUser):
     bio = models.TextField(blank=True)
     profilo_pubblico = models.BooleanField(default=False)
     
-    active = models.BooleanField(default=True)
-    staff = models.BooleanField(default=False)
-    admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    #staff = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
@@ -65,15 +63,7 @@ class Autore(AbstractBaseUser):
 
     @property
     def is_staff(self):
-        return self.staff
-
-    @property
-    def is_admin(self):
-        return self.admin
-    
-    @property
-    def is_active(self):
-        return self.active
+        return self.is_admin
 
     def __str__(self):
         return self.username + ", " + self.first_name + " " + self.last_name  

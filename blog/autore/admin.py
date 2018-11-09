@@ -17,16 +17,16 @@ class UserAdmin(BaseUserAdmin):
 		(None, {'fields': ('username', 'password')}),
         ('Personal Info',{'fields': ('first_name', 'last_name', 'email')}),
 		('Altre', {'fields': ['bio', 'profilo_pubblico', 'data_registrazione']}),
-        ('Permissions', {'fields': ('admin',)}),
+        ('Permissions', {'fields': ('is_admin',)}),
 	]
 	add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'admin')}),
+            'fields': ('username', 'password1', 'password2', 'email', 'is_admin')}),
     )
 	readonly_fields = ['data_registrazione']
 	list_filter = ['data_registrazione']
-	list_display = ('username', 'data_registrazione', 'profilo_pubblico', 'admin', 'staff')
+	list_display = ('username', 'data_registrazione', 'profilo_pubblico', 'is_admin'6yt73e4)
 	search_fields = ('username',)
 	ordering = ('data_registrazione', 'first_name')
 	filter_horizontal = ()

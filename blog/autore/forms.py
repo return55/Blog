@@ -18,7 +18,7 @@ class RegisterForm(BaseFormAutore):
 
 	class Meta:
 		model = Autore
-		fields = ('username', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico', 'admin')
+		fields = ('username', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico', 'is_admin')
 
 	def clean_password2(self):
 		# Check that the two password entries match
@@ -50,7 +50,7 @@ class UserAdminChangeForm(BaseFormAutore):
 
 	class Meta:
 		model = Autore
-		fields = ('username', 'password', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico', 'active', 'admin')
+		fields = ('username', 'password', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico', 'is_admin')
 
 	def clean_password(self):
 		# Regardless of what the user provides, return the initial value.
