@@ -1,18 +1,53 @@
 {% extends "base.html" %}
 
-{% block body %}
-	<link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">
+{% block head %}
+	<title>{% block title %}Articolo {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">  
+{% endblock %} 
 
+{% block body %}
+<div class="container py-3 ml-5">
 	<h1 class="titolo">{{ articolo.titolo }}</h1> {# dovro' centrarlo #}
 	<p>{{ articolo.data }}</p>
 	<div class="multiline">{{ articolo.testo }}</div>
 	<br>
-	<a style="font-size:20px" href="{% url 'autore:info' autore.id %}">{{ autore.nick }}</a>
+	<a style="font-size:30px" href="{% url 'autore:info' autore.id %}">{{ autore.username }}</a>
 	<br>
 	{# sezione commenti #}
-	{% include "articolo/commenti.html" with commenti=commenti only %}
-	<form action="{% url 'articolo:aggiungi_commento' articolo.id %}" method="get">
-		{% csrf_token %}
-		<button type="submit">Commenta</button>
-	</form>
+	<div class="row mr-auto pt-3">
+		<form class="pl-4 pt-2" action="{% url 'articolo:aggiungi_commento' articolo.id %}" method="get">
+			<input class="col-12 btn btn-outline-primary" type="submit" value="Commenta" />
+		</form>
+		<form class="pl-4 pt-2" action="{% url 'articolo:commenti' articolo.id %}" method="get">
+			<input class="col-12 btn btn-outline-secondary" type="submit" value="Visualizza solo i commenti" />
+		</form>
+	</div>
+	<div class="pt-4 floatleft row mx-auto pl-1">
+	{% if commenti|length == 0 %}
+		<a class="ml-4" style="color: crimson; font-size: 24px">Per questo articolo non ci sono commenti.</a>
+	{% else %}
+		<ul class="col-6 pt-5 ml-4 list-group list-group-flush">
+			{% for commento in commenti %}
+				<li class="list-group-item">
+					<label style="font-size: 20px;">{{ commento.commentatore }}</label>
+					<br>
+					<div class="multiline">{{ commento.testo }}</div>
+					<br>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	</div>
+	{# sezione citazioni #}
+	<div class="floatright col-6">
+		<h3 >Articoli Citati:</a><br>
+		{% for arti in citazioni %}
+			<a class="risultati" href="{% static 'articolo/info.html' arti.id %}">
+				{{ arti.titolo }}
+			</a><br>
+		{% endfor %}
+	</div>
+	
+</div>
 {% endblock body %}

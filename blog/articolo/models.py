@@ -16,6 +16,10 @@ CREATE SCHEMA public;
 grant usage on schema public to blog;
 grant create on schema public to blog;
 """
+class LowerCaseCharField(models.CharField):
+    def to_python(self, value):
+        value = super(LowerCaseCharField, self).to_python(value)
+        return value.lower()
 
 class Articolo(models.Model):
     titolo =  models.CharField(max_length=200, help_text="Titolo", unique=True)
@@ -30,7 +34,7 @@ class Articolo(models.Model):
         ('POLITICA', 'Politica'),
         ('VIAGGI', 'Viaggi'),
     )
-    keywords = ArrayField(models.CharField(max_length=15), blank=True, size=10, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
+    keywords = ArrayField(LowerCaseCharField(max_length=15), blank=True, size=10, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
     categoria = models.CharField(max_length=8, choices=CATEGORIE_DISPONIBILI, help_text="Categoria")
     cita = models.ManyToManyField('self', blank=True, symmetrical=False)
     #numero di articoli che mi hanno citato

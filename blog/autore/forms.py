@@ -75,18 +75,19 @@ class RegistrationForm(BaseFormAutore):
 	class Meta:
 		model = Autore
 		fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'bio', 'profilo_pubblico')
-
-	def clean_password(self):
+		
+	
+	def clean(self):
 		password = self.cleaned_data.get('password')
 		password2 = self.cleaned_data.get('password2')
+		print("Password:")
+		print(password)
+		print("Password 2:")
+		print(password2)
 		if password != password2:
 			raise forms.ValidationError("Le passwords non corrispondono")
-		return password
-
-	def clean(self):
-		self.clean_password()
 		return super(RegistrationForm, self).clean()
-
+	
 	def save(self, commit=True):
 		# Save the provided password in hashed format
 		user = super(RegistrationForm, self).save(commit=False)

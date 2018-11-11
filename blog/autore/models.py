@@ -55,6 +55,9 @@ class Autore(AbstractBaseUser):
 
     objects = UserManager()
 
+    def get_id(self):
+        return self.get_id
+
     def has_perm(self, perm, obj=None):
         return True
 

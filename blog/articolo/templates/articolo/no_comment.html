@@ -1,2 +1,16 @@
-<div>Non ci sono commenti per l'articolo: {{ titolo }}</div>
-{# da aggiungere colore, font --- titolo in grassetto#}
+{% extends "base.html" %} 
+
+{% block head %}
+	<title>{% block title %}No Comment {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">  
+{% endblock %} 
+
+{% block body %}	
+<div class="container py-3 ml-5" style="text-align: center">
+		<h1 class="titolo" style="color:rgb(9, 20, 170)">Non ci sono commenti per l'articolo: <br>
+			<a href="{% url 'articolo:info' id_articolo %}">{{ titolo }}</a>
+		</h1>
+	
+</div>
+{% endblock body %}

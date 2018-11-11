@@ -1,0 +1,19 @@
+{% extends "base.html" %} 
+
+{% block head %}
+	<title>{% block title %}Commenta {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">  
+{% endblock %} 
+
+{% block body %}	
+<div class="container py-3 ml-5">
+	<h1 class="titolo row">{{ articolo.titolo }}</h1>
+	<form class="row col-6" action="{% url 'articolo:aggiungi_commento' articolo.id %}" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<br><br>
+		<input class="row col-6 btn btn-outline-success ml-1" type="submit" value="CREA" />
+	</form>
+</div>
+{% endblock body %}

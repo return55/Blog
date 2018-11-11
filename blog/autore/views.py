@@ -10,10 +10,13 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
 from .models import Autore
-from articolo.models import Articolo
+from articolo.models import Articolo, Commento
 from .forms import  (
     UserAdminChangeForm,  SettingsForm,
     RegistrationForm,
+)
+from articolo.forms import (
+    ArticoloAddForm, FormCommento
 )
 
 
@@ -36,7 +39,7 @@ def info(request, id_autore):
         messages.info(request, "Prima devi effettuare il login")
         return HttpResponseRedirect(reverse('login')) 
 
-#mancano i controlli su javascript, guarda SettingsForm
+
 @login_required()
 def settings(request, id_autore):
     autore = get_object_or_404(Autore, pk=id_autore)
@@ -96,57 +99,35 @@ def cambia_password(request, id_autore):
 
 @login_required()
 def aggiungi_articolo(request, id_autore):
-    autore = get_object_or_404(Autore, pk=id_autore)
+    categorie = Articolo.CATEGORIE_DISPONIBILI
+    context = {
+        'categorie' : categorie,
+    }
     if request.method == 'POST':
-        #controlli (da spostare su javascript)
-        if request.POST['titolo'] == "":
-            return HttpResponseRedirect(reverse('autore:scrivi', 
-                args=(id_autore, "Il titolo non puo' essere vuoto")))
-        if request.POST['testo'] == "":
-            return HttpResponseRedirect(reverse('autore:scrivi',
-                args=(id_autore, "Il testo non puo' essere vuoto")))
-        #aggiungi un controlo sul radio button
-
-        articolo = Articolo.objects.create(titolo=request.POST['titolo'],
-            id_autore=autore,
-            testo=request.POST['testo'],
-            categoria=request.POST['categoria'])
-
-        return HttpResponse("L'articolo e' stato creato")
+        form = ArticoloAddForm(request.POST)
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            data = form.clean()
+            nuovo_articolo = Articolo.objects.create(
+                                titolo= data.get('titolo'),
+                                id_autore= request.user,
+                                testo= data.get('testo'),
+                                keywords= data.get('keywords'),
+                                categoria= data.get('categoria')
+                            )
+            for arti in data.get('cita'):
+                nuovo_articolo.cita.add(arti)
+            nuovo_articolo.save()
+            messages.success(request, 'Articolo creato correttamente.')
+            return redirect('articolo:info', permanent=True, id_articolo=nuovo_articolo.id)
     else:
-        categorie = Articolo.CATEGORIE_DISPONIBILI
-        context = {
-            'id_autore' : id_autore,
-            'categorie' : categorie,
-        }
-        return render(request, 'autore/crea_articolo.html', context=context)
+        form = ArticoloAddForm()
 
-#Se l'utente e' autenticato setto il nick qui e gli mostro un form senza nick.
-#Altrimenti gli mostro il form col nick
-def aggiungi_commento(request, id_articolo):
-    if request.method == 'GET':
-        if request.user.is_authenticated():
-            return render(request, 'articolo/crea_commento.html', { 'form': FormCommento_NoNick(),})         
-        else:
-            return render(request, 'articolo/crea_commento.html', { 'form': FormCommento_ConNick(),})
-    else:
-        """
-        if request.user.is_authenticated():
-            c = FormCommento_NoNick(request.POST)
-        else:
-            c = FormCommento_ConNick(request.POST)
-        
-        #controlla perche' il form non funziona
-        if c.is_valid():
-            nuovo_comm = c.save()
-            messages.success(request, 'Commento creato correttamente')
-            return HttpResponseRedirect(reverse('articolo:info', args=(id_articolo,)))
-        else:
-            return HttpResponse(c.errors.as_text())
-        """
+    context['form']= form
+    
+    return render(request, 'autore/crea_articolo.html', context=context)
 
-
-#mostro tutti gli atori col profilo pubblico: nome, cognome che e' un link alla loro pagina
+#mostro tutti gli autori col profilo pubblico: nome, cognome che e' un link alla loro pagina
 #se riesco li rendo ordinabili per data iscrizione e ricerca per nome e cognome
 def tutti(request):
     autori = Autore.objects.filter(profilo_pubblico=True)

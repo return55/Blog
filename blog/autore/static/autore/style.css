@@ -2,24 +2,9 @@
     width: 100%;
 }
 
-.floatleft {
-    float:left; 
-    width: 60%;
-    /*background-color: brown;*/
-    /*height: 400px;*/
-}
 
-.floatright {
-    float: right;
-    /*height: 400px;*/
-    width: 40%;
-    background-color: rgb(125, 243, 110);
-}
 
-.risultati {
-    font-size: 25px;
-    text-decoration: underline;
-}
+
 
 .form_tutti {
     font-size: 21px;
