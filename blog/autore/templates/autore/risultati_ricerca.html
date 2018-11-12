@@ -8,42 +8,67 @@
 
 {% block body %}
 <div class="wrap py-3 mt-3  ml-5">
-	<div class="floatleft row mx-auto pt-5 pl-1">
-		{% for autore in autori %}
-			<a class="risultati " href="{% static 'autore/info.html' autore.id %}">
-				{{ autore.first_name }} {{ autore.last_name }}
-			</a>
-		{% endfor %}
-	</div>
-	<div class="floatright mx-0">
-		{# se vengo da tutti mostro le opzioni di ricerca per nome e cognome #}
+	<div class="floatleft mx-auto pt-5 pl-5">
 		{% if tutti %}
-			<h3 class="pl-2">Cerca un autore:</h2>
-			<form class="form-inline my-2 mx-2 form_tutti" action="{% url 'autore:cerca' %}" method="post">
-				{% csrf_token %}
-				<table>
-					<tr class="row">
-						<td class="col-3">Nome </td>
-						<td class="col-2">
-							<input class="form-control mr-sm-2" type="text" name="first_name" >
-						</td>
-					</tr>
-					<tr class="row mt-3">
-						<td class="col-3" >Cognome </td>
-						<td class="col-2">
-							<input class="form-control mr-sm-2" type="text" name="last_name" >
-						</td>
-					</tr>
-					<tr class="row mt-3">
-						<td class="col-2">
-							<button class="btn btn-outline-success " type="submit">Cerca</button>
-						</td>
-					</tr>						
-				</table>
-				
-			</form> 
+		<h2 class="row">Lista degli Autori:</h2>
+		{% else %}
+		<h2 class="row">Risultato della Ricerca:</h2>
+		{% endif %}
+
+		{# se non ho risultati: mostro un messaggio altrimenti mostro i risultati #}
+		{% if autori|length == 0 %}
+			{# messaggio se arrivo da tutti #}
+			{% if tutti %}
+			<h4 class="row" style="color:brown">Non ci sono autori col profilo pubblico :(</h4>
+			{% else %}
+			<h4 class="row" style="color:brown">La tua ricerca non ha prodotto risultati.</h4>
+			{% endif %}
+		{% else %}
+		<ul class="row pt-5 pr-5 list-group ">
+			{% for autore in autori %}
+				<li class="list-group-item col-6" >
+					{% if autore.profilo_pubblico %}
+					<a class="risultati" href="{% url 'autore:info' autore.id %}">
+					{% else %}
+					<a class="risultati-no-pubblici">
+					{% endif %}
+						{{ autore.first_name }} {{ autore.last_name }}, {{ autore.username }}
+					</a>					
+				</li>
+			{% endfor %}
+		</ul>		
 		{% endif %}
 	</div>
+	{# ricerca per nome e cognome. disponibile solo se arrivo da tutti #}
+	{% if tutti %}
+	<div class="floatright p-4 mt-5">
+		{# se vengo da tutti mostro le opzioni di ricerca per nome e cognome #}		
+		<h3 class="pl-2">Cerca un autore:</h3>
+		<form class="form-inline my-2 mx-2 form_tutti " action="{% url 'autore:cerca' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr class="row">
+					<td class="col-3">Nome </td>
+					<td class="col-2">
+						<input class="form-control mr-sm-2" type="text" name="first_name" >
+					</td>
+				</tr>
+				<tr class="row mt-3">
+					<td class="col-3" >Cognome </td>
+					<td class="col-2">
+						<input class="form-control mr-sm-2" type="text" name="last_name" >
+					</td>
+				</tr>
+				<tr class="row mt-3">
+					<td class="col-2">
+						<button class="btn btn-outline-success " type="submit">Cerca</button>
+					</td>
+				</tr>						
+			</table>
+			
+		</form> 
+	</div>
+	{% endif %}
 	<div style="clear: both;"></div>
 </div>	
 

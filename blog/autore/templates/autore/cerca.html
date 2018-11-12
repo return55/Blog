@@ -1,0 +1,22 @@
+{% extends "base.html" %} 
+
+{% block head %}
+	<title>{% block title %}Cerca Autore {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'autore/style.css' %}">  
+{% endblock %} 
+
+{% block body %}
+<div class="container p-5 my-5 div-index">
+	<h1>Ricerca Avanzata</h1>
+
+	<form class=" form_tutti pt-3" action="{% url 'autore:cerca' %}" method="post">
+		{% csrf_token %}
+        {{ form.as_p }}
+		
+		<input class="col-8 mt-5 btn btn-outline-primary" type="submit" value="Cerca" />
+	</form>
+</div>
+{% endblock body %}
+
+

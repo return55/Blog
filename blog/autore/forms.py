@@ -2,6 +2,8 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
+import datetime
+
 from .models import Autore
 from articolo.models import Commento
 
@@ -113,3 +115,23 @@ class SettingsForm(BaseFormAutore):
 	def clean(self):
 		return super(SettingsForm, self).clean()
 
+
+
+#form che contienen i campi per la ricerca avanzata.
+#view: cerca | cerca.html
+#idea per controllo in js:
+#almeno un campo deve essere != da vuoto per far partire la ricerca
+class CercaAutoreForm(forms.Form):
+	username = forms.CharField(max_length=20, required=False)
+	email = forms.EmailField(widget=forms.EmailInput, required=False)
+	first_name = forms.CharField(label='Nome',max_length=20, required=False)
+	last_name = forms.CharField(label='Cognome',max_length=20, required=False)
+	#range di date
+	data_inizio = forms.DateField(
+		widget=forms.SelectDateWidget(
+			years=range(2000, datetime.datetime.today().year+1)),
+			required=False)	
+	data_fine = forms.DateField(
+		widget=forms.SelectDateWidget(
+			years=range(2000, datetime.datetime.today().year+1)),
+			required=False)	

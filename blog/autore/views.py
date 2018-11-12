@@ -6,14 +6,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+import datetime
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+
+import re
 
 from .models import Autore
 from articolo.models import Articolo, Commento
 from .forms import  (
     UserAdminChangeForm,  SettingsForm,
-    RegistrationForm,
+    RegistrationForm, CercaAutoreForm
 )
 from articolo.forms import (
     ArticoloAddForm, FormCommento
@@ -127,10 +131,11 @@ def aggiungi_articolo(request, id_autore):
     
     return render(request, 'autore/crea_articolo.html', context=context)
 
-#mostro tutti gli autori col profilo pubblico: nome, cognome che e' un link alla loro pagina
+#mostro tutti gli autori, quelli col profilo pubblico saranno dei link.
+#mostro: nome, cognome, username
 #se riesco li rendo ordinabili per data iscrizione e ricerca per nome e cognome
 def tutti(request):
-    autori = Autore.objects.filter(profilo_pubblico=True)
+    autori = Autore.objects.all()
     if autori != None :
         context = {
             'autori' : autori,
@@ -143,7 +148,40 @@ def tutti(request):
 
 #creo un form apposta e lo mando (get) al ritorno analizzo i risultati (post)
 def cerca(request):
-    return render(request, 'autore/cerca.html', context={})
+    if request.method == "POST":
+        form = CercaAutoreForm(request.POST)
+        if form.is_valid():
+            data = form.clean()
+            autori_risultati = Autore.objects.filter(profilo_pubblico=True)
+            for campo, val in data.items():
+                print(campo, "-", val, "-", sep=''  )
+                if val != None and val != '' and re.match(r'data.*', campo) == None :
+                    cmd = "autori_risultati.filter("+campo.__str__()+"=val)"
+                    autori_risultati = eval(cmd)
+            #controllo la data
+            data_inizio = data.get('data_inizio')
+            data_fine = data.get('data_fine')
+            if data_inizio != None and data_fine != None:
+                #ricerca range
+                cmd = "autori_risultati.filter(data_registrazione__range=[\""+data_inizio.__str__()+"\", \""+data_fine.__str__()+"\"])"
+                autori_risultati = eval(cmd)
+            elif data_inizio != None:
+                #ricerca  [data inizio - oggi]
+                data_fine = datetime.date.today()
+                print(data_fine)
+                cmd = "autori_risultati.filter(data_registrazione__range=[\""+data_inizio.__str__()+"\", \""+data_fine.__str__()+"\"])"
+                autori_risultati = eval(cmd)
+            elif data_fine != None:
+                #ricerca [oggi - data fine]
+                data_inizio = datetime.date.today()
+                print(data_inizio)
+                cmd = "autori_risultati.filter(data_registrazione__range=[\""+data_inizio.__str__()+"\", \""+data_fine.__str__()+"\"])"
+                autori_risultati = eval(cmd)
+
+            return render(request, 'autore/risultati_ricerca.html', context={'autori': autori_risultati.all()})
+    else:
+        form = CercaAutoreForm()       
+    return render(request, 'autore/cerca.html', { 'form': form })
 
 
 

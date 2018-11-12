@@ -30,7 +30,10 @@ p.paragrafo_testo {
 .risultati {
     font-size: 25px;
     text-decoration: underline;
+    
 }
+
+
 
 .floatleft {
     float:left; 
