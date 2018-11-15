@@ -13,13 +13,21 @@ class ArticoloAdmin(admin.ModelAdmin):
 	form = ArticoloAdminChange
 	
 	fieldsets  = [
-		(None,		  {'fields': ['titolo', 'id_autore', 'testo', 'categoria']}),
+		(None,		  {'fields': ['titolo', 'id_autore', 'testo', 'categoria', 'data']}),
 		('Opzionali', {'fields': ['keywords', 'cita']}),
 	]
 	inlines = [CommentoInline]
+	
 	list_display = ('titolo', 'data', 'get_nick_autore', 'citato')
 	list_filter = ['data', 'citato']
 	search_fields = ['titolo']
+
+	def get_form(self, request, obj=None, **kwargs):
+		if obj:
+			self.readonly_fields = ['data', 'cita']
+		else:
+			self.readonly_fields = ['data']
+		return super().get_form(request, obj, **kwargs)
 
 
 class CommentoAdmin(admin.ModelAdmin):

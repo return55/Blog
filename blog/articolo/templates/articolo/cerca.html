@@ -1,0 +1,22 @@
+{% extends "base.html" %} 
+
+{% block head %}
+	<title>{% block title %}Cerca Articolo {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'autore/style.css' %}">  
+{% endblock %} 
+
+{% block body %}
+<div class="container p-5 my-5 div-index">
+	<h1>Ricerca Avanzata</h1>
+
+	<form class="col-11 form_tutti pt-3" action="{% url 'articolo:cerca' %}" method="post">
+		{% csrf_token %}
+        {{ form.as_p }}
+		
+		<input class="col-5 py-3 mt-3  btn btn-outline-primary" type="submit" value="Cerca" style="font-size: 22px;"/>
+	</form>
+</div>
+{% endblock body %}
+
+

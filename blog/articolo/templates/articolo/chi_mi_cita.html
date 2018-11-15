@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<title>{% block title %}Citazioni {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'articolo/style.css' %}">  
+{% endblock %} 
+
+{% block body %}
+
+<div class="container pt-3 ml-5">
+	<h1 class="titolo ml-5">{{ titolo }}</h1>
+
+	{% if articoli|length == 0 %}
+		<a class="ml-5" style="color: crimson; font-size: 24px">Questo articolo non e' mai stato citato.</a>
+	{% else %}
+		<ul class="row pt-5 pr-5 list-group ml-5">
+			{% for articolo in articoli %}
+				<li class="list-group-item col-10">
+					<a href="{% url 'articolo:info' articolo.id %}">
+						<label style="font-size: 20px;">{{ articolo.titolo }}</label>
+						<br>
+					</a>					
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+</div>
+{% endblock body %}

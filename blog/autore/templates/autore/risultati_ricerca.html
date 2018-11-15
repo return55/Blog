@@ -10,9 +10,9 @@
 <div class="wrap py-3 mt-3  ml-5">
 	<div class="floatleft mx-auto pt-5 pl-5">
 		{% if tutti %}
-		<h2 class="row">Lista degli Autori:</h2>
+		<h2 class="row">Lista degli Autori: ({{ autori|length }} autori)</h2>
 		{% else %}
-		<h2 class="row">Risultato della Ricerca:</h2>
+		<h2 class="row">Risultato della Ricerca: ({{ autori|length }} autori)</h2>
 		{% endif %}
 
 		{# se non ho risultati: mostro un messaggio altrimenti mostro i risultati #}
@@ -41,7 +41,7 @@
 	</div>
 	{# ricerca per nome e cognome. disponibile solo se arrivo da tutti #}
 	{% if tutti %}
-	<div class="floatright p-4 mt-5">
+	<div class="floatright col-4 mt-5 mr-5">
 		{# se vengo da tutti mostro le opzioni di ricerca per nome e cognome #}		
 		<h3 class="pl-2">Cerca un autore:</h3>
 		<form class="form-inline my-2 mx-2 form_tutti " action="{% url 'autore:cerca' %}" method="post">

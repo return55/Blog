@@ -15,9 +15,9 @@
 	{% if commenti|length == 0 %}
 		<a class="ml-5" style="color: crimson; font-size: 24px">Per questo articolo non ci sono commenti.</a>
 	{% else %}
-		<ul class="col-6 pt-5 ml-5">
+		<ul class="row pt-5 pr-5 list-group ml-5">
 			{% for commento in commenti %}
-				<li>
+				<li class="list-group-item col-10">
 					<label style="font-size: 20px;">{{ commento.commentatore }}</label>
 					<br>
 					<div class="multiline">{{ commento.testo }}</div>

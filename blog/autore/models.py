@@ -39,8 +39,8 @@ class UserManager(BaseUserManager):
 class Autore(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     username = models.CharField(max_length=20, unique=True)
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=20, blank=True)
+    last_name = models.CharField(max_length=20, blank=True)
 
     data_registrazione = models.DateField(default=datetime.date.today, editable=False)
     bio = models.TextField(blank=True)

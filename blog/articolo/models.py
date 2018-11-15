@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 from django.contrib.postgres.fields import ArrayField
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch.dispatcher import receiver
 
 from autore.models import Autore
@@ -26,7 +26,7 @@ class Articolo(models.Model):
     id_autore = models.ForeignKey(Autore, on_delete=models.CASCADE)
     testo = models.TextField() #max_length=10000
     data = models.DateField(default=datetime.date.today, editable=False)
-    CATEGORIE_DISPONIBILI =(
+    CATEGORIE_DISPONIBILI = (
         ('CINEMA', 'Cinema'),
         ('SCIENZA', 'Scienza'),
         ('SPORT', 'Sport'),
@@ -60,9 +60,15 @@ class Articolo(models.Model):
 
 #quando elimino un articolo devo modificare il campo 'citato' degli altri: (citati - 1)
 @receiver(post_delete, sender=Articolo)
-def aggiorno_citato_altri(sender, instance, *args, **kwargs):
+def aggiorno_citato_altri_del(sender, instance, *args, **kwargs):
     for articolo in instance.cita.all():
         articolo.citato -= 1
+
+#quando creo un articolo devo modificare il campo 'citato' degli altri: (citati + 1)
+@receiver(post_save, sender=Articolo)
+def aggiorno_citato_altri_add(sender, instance, *args, **kwargs):
+    for articolo in instance.cita.all():
+        articolo.citato += 1
 
 class Commento(models.Model):
     id_articolo = models.ForeignKey(Articolo, on_delete=models.CASCADE)

@@ -12,7 +12,7 @@
  
 .titolo
 {
-  font-size: 50px
+  font-size: 45px
 }
 /** per crea commento */
 input {
@@ -44,6 +44,13 @@ input {
 .floatright {
   float: right;
   /*height: 400px;*/
-  width: 40%;
+  width: 35%;
   background-color: rgb(254, 255, 183);
+}
+
+.floatright_k {
+  float: right;
+  /*height: 400px;*/
+  width: 40%;
+  background-color: rgb(164, 226, 238);
 }

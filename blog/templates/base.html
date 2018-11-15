@@ -13,7 +13,7 @@
 			</head>
 			<body>
 				{# Menu #}
-				<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light ">
 					<a class="navbar-brand" href="{% url 'main' %}">
 							<img src="{% static 'images/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">    BLOG
 					</a>
@@ -57,19 +57,20 @@
 									<a class="dropdown-submenu">
 										<a href="#" class="dropdown-item dropdown-toggle" data-toggle="dropdown">Categorie</a>
 										<ul class="dropdown-menu">
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Cinema' %}">Cinema</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Scienza' %}">Scienza</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Sport' %}">Sport</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Cucina' %}">Cucina</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Politica' %}">Politica</a></li>
-											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'Viaggi' %}">Viaggi</a></li>
+											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'CINEMA' %}">Cinema</a></li>
+											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'SCIENZA' %}">Scienza</a></li>
+											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'SPORT' %}">Sport</a></li>
+											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'CUCINA' %}">Cucina</a></li>
+											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'POLITICA' %}">Politica</a></li>
+											<li class="dropdown-item"><a href="{% url 'articolo:filtro_categoria' 'VIAGGI' %}">Viaggi</a></li>
 										</ul>
 									</a>
 								</div>
 							</li>
 						{# devo mettere la post alla ricerca #}
 							<form class="form-inline my-2 mx-2 my-md-0 " action="{% url 'articolo:cerca' %}" method="post">
-								<input class="form-control mr-sm-2" type="text" name="titolo" placeholder="Titolo">
+								{% csrf_token %}
+								<input class="form-control mr-sm-2" type="text" name="parole" placeholder="Cerca negli articoli">
 								<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
 							</form>
 							{% if request.user.is_authenticated %}

@@ -155,7 +155,7 @@ def cerca(request):
             autori_risultati = Autore.objects.filter(profilo_pubblico=True)
             for campo, val in data.items():
                 print(campo, "-", val, "-", sep=''  )
-                if val != None and val != '' and re.match(r'data.*', campo) == None :
+                if val != None and val != '' and re.match(r'data.*', campo) is None :
                     cmd = "autori_risultati.filter("+campo.__str__()+"=val)"
                     autori_risultati = eval(cmd)
             #controllo la data
