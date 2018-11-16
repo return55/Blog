@@ -1,8 +1,13 @@
 from django.shortcuts import render, loader, get_object_or_404, get_list_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import (
+    HttpResponse, HttpResponseRedirect,
+    HttpResponseNotFound, HttpResponseNotAllowed
+)
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 from django.contrib.postgres.search import (
     SearchQuery, SearchRank, SearchVector
@@ -193,3 +198,37 @@ def chi_mi_cita(request, id_articolo):
     }
     print(Articolo.objects.filter(cita=articolo.id))
     return render(request, 'articolo/chi_mi_cita.html', context=context)
+
+#puoi votare solo se:
+#-sei autenticato
+#-l'articolo non e' stato scitto da te
+#-non hai gia' votato questo articolo.
+#Una richiesta get porta a una pagina di errore.
+@login_required()
+def vota(request, id_articolo):
+    articolo = get_object_or_404(Articolo, pk=id_articolo)
+    if request.method == 'POST':
+        #controllo che l'articolo non sia dell'utente autenticato
+        articoli_utente = Articolo.objects.filter(id_autore=request.user.id)
+        if articolo.id in [ articolo.id for articolo in articoli_utente ]:
+            return render(request, 'articolo/messaggi_votazione.html', context={'titolo': "Non puoi votare un tuo articolo !!"})
+        #controllo che non sia gia' stato votato
+        articoli_votati = request.user.articoli_votati
+        if articolo.id in articoli_votati:
+            return render(request, 'articolo/messaggi_votazione.html', context={'titolo': "Non puoi votare lo stesso articolo 2 volte !!"})
+        #fine dei controlli
+        voto = int(request.POST['voto'])
+        print(voto)
+
+        request.user.articoli_votati.append(articolo.id)
+        articolo.somma_voti += voto
+        articolo.numero_voti += 1
+
+        request.user.save()
+        articolo.save()
+
+        messages.success(request, 'Votazione avvenuta con successo.')
+        return HttpResponseRedirect(reverse('articolo:info', args=(id_articolo,)))        
+    else:
+        #con la get restituisco una pagina di errore
+        return render(request, 'articolo/messaggi_votazione.html', context={'titolo': "Per votare un articolo devi andare nella sua pagina delle informazioni."})

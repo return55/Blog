@@ -13,4 +13,5 @@ urlpatterns = [
     path('cerca/', views.cerca, name='cerca'),
     path('filtro_categoria/<str:categoria>', views.filtro_categoria, name='filtro_categoria'),
     path('<int:id_articolo>/chi_mi_cita/', views.chi_mi_cita, name='chi_mi_cita'),
+    path('<int:id_articolo>/vota/', views.vota, name='vota'),
 ]

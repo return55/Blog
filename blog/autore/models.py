@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
 )
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.contrib.postgres.fields import ArrayField
 
 import datetime
 
@@ -45,6 +46,8 @@ class Autore(AbstractBaseUser):
     data_registrazione = models.DateField(default=datetime.date.today, editable=False)
     bio = models.TextField(blank=True)
     profilo_pubblico = models.BooleanField(default=False)
+
+    articoli_votati = ArrayField(models.IntegerField(editable=False, default=0), editable=False, default=list, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
     
     is_active = models.BooleanField(default=True)
     #staff = models.BooleanField(default=False)
@@ -74,20 +77,5 @@ class Autore(AbstractBaseUser):
     class Meta: 
         get_latest_by  = ['first_name', 'last_name']
         verbose_name_plural = 'Autori'
-"""
-class Autore(models.Model):
-    user = models.OneToOneField(MyUser, primary_key=True, on_delete=models.CASCADE)
-    data_registrazione = models.DateField(default=datetime.date.today, editable=False)
-    bio = models.TextField(blank=True)
-    profilo_pubblico = models.BooleanField(default=False)
 
-    class Meta:
-        get_latest_by  = ['-self.user.first_name', '-self.user.last_name']
-        verbose_name_plural = 'Autori'
-
-    def __str__(self):
-        return self.user.first_name + " " + self.user.last_name + ", " + self.user.username
-
-User.profile = property(lambda u: Autore.objects.get_or_create(user=u)[0])
-""" 
 

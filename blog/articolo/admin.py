@@ -18,7 +18,7 @@ class ArticoloAdmin(admin.ModelAdmin):
 	]
 	inlines = [CommentoInline]
 	
-	list_display = ('titolo', 'data', 'get_nick_autore', 'citato')
+	list_display = ('titolo', 'data', 'get_nick_autore', 'citato', 'get_voto')
 	list_filter = ['data', 'citato']
 	search_fields = ['titolo']
 

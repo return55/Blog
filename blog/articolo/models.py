@@ -39,10 +39,18 @@ class Articolo(models.Model):
     cita = models.ManyToManyField('self', blank=True, symmetrical=False)
     #numero di articoli che mi hanno citato
     citato =  models.IntegerField(editable=False, default=0)
+    #media dei voti degli utenti
+    somma_voti =  models.IntegerField(editable=False, default=0)
+    numero_voti = models.IntegerField(editable=False, default=0)
 
     class Meta:
         get_latest_by  = '-data'
         verbose_name_plural = 'Articoli'
+
+    def get_voto(self):
+        if self.numero_voti == 0:
+            return 0
+        return self.somma_voti / self.numero_voti
 
     def get_nick_autore(self):
         return self.id_autore.username

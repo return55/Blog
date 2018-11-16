@@ -1,0 +1,13 @@
+{% extends "base.html" %} 
+
+{% block head %}
+	<title>{% block title %}Errore Nella Votazione {% endblock title %}</title>
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'autore/style.css' %}">  
+{% endblock %} 
+
+{% block body %}
+<div class="container p-5 my-5 div-index">
+	<h1>{{ titolo }}</h1>
+</div>
+{% endblock body %}

@@ -33,7 +33,7 @@ def info(request, id_autore):
             articoli = Articolo.objects.filter(id_autore=id_autore)
             template = loader.get_template('autore/info.html')
             context = {
-                'autore': autore,
+                'autore': autore,  
                 'articoli': articoli,
             }
             return HttpResponse(template.render(context, request))

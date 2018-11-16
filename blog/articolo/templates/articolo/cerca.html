@@ -10,7 +10,7 @@
 <div class="container p-5 my-5 div-index">
 	<h1>Ricerca Avanzata</h1>
 
-	<form class="col-11 form_tutti pt-3" action="{% url 'articolo:cerca' %}" method="post">
+	<form class="col-11 form_tutti pt-3" action="{% url 'articolo:cerca' %}" method="post" onsubmit="return Validate();">
 		{% csrf_token %}
         {{ form.as_p }}
 		
