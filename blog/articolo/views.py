@@ -14,6 +14,7 @@ from django.contrib.postgres.search import (
 )
 import re
 import datetime
+from django.utils import timezone
 
 from autore.models import Autore
 from articolo.models import Articolo, Commento
@@ -25,7 +26,7 @@ from articolo.forms import (
 
 #mostra gli articoli piu' recenti
 def index(request):
-    ultimi_articoli = Articolo.objects.order_by('-data')[:10]
+    ultimi_articoli = Articolo.objects.filter(data__lte=timezone.now()).order_by('-data')[:10]
     autori = [Autore.objects.get(pk=art.id_autore.id) for art in ultimi_articoli]
     
     assert len(ultimi_articoli) == len(autori), "Articolo/index: numero articoli != numero autori"

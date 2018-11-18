@@ -13,7 +13,13 @@
 		<p>{{ articolo.data }}&emsp;({{articolo.categoria}})</p>
 		<div class="multiline">{{ articolo.testo }}</div>
 		<br>
-		<a style="font-size:30px" href="{% url 'autore:info' autore.id %}">{{ autore.username }}</a>
+		{% if autore.profilo_pubblico %}
+		<a class="risultati" href="{% url 'autore:info' autore.id %}">
+		{% else %}
+		<a class="risultati-no-pubblici">
+		{% endif %}
+		{{ autore.username }}
+		</a>
 		<br>
 		{# sezione commenti #}
 		<div class="row mr-auto pt-3">

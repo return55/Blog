@@ -40,18 +40,19 @@ class UserManager(BaseUserManager):
 class Autore(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     username = models.CharField(max_length=20, unique=True)
-    first_name = models.CharField(max_length=20, blank=True)
-    last_name = models.CharField(max_length=20, blank=True)
+    first_name = models.CharField(max_length=20, blank=True, default="")
+    last_name = models.CharField(max_length=20, blank=True, default="")
 
     data_registrazione = models.DateField(default=datetime.date.today, editable=False)
     bio = models.TextField(blank=True)
-    profilo_pubblico = models.BooleanField(default=False)
+    profilo_pubblico = models.BooleanField(default=False, blank=True)
 
-    articoli_votati = ArrayField(models.IntegerField(editable=False, default=0), editable=False, default=list, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
+    articoli_votati = ArrayField(models.IntegerField(editable=False, default=0),
+                                editable=False, default=list)
     
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, blank=True)
     #staff = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False, blank=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

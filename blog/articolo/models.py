@@ -34,7 +34,7 @@ class Articolo(models.Model):
         ('POLITICA', 'Politica'),
         ('VIAGGI', 'Viaggi'),
     )
-    keywords = ArrayField(LowerCaseCharField(max_length=15), blank=True, size=10, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
+    keywords = ArrayField(LowerCaseCharField(max_length=15), blank=True, default=list, size=10, help_text="Puoi inserire max 10 parole chiave per il tuo articolo")
     categoria = models.CharField(max_length=8, choices=CATEGORIE_DISPONIBILI, help_text="Categoria")
     cita = models.ManyToManyField('self', blank=True, symmetrical=False)
     #numero di articoli che mi hanno citato

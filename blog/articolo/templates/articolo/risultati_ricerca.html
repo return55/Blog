@@ -47,7 +47,7 @@
 	<div class="floatright  col-4 mt-5 mr-5">
 		{# se vengo da tutti mostro le opzioni di ricerca nel testo e nel titolo #}		
 		<h3 class="pl-2">Cerca un articolo:</h3>
-		<form class="form-inline my-2 mx-2 form_tutti " action="{% url 'articolo:cerca' %}" method="post">
+		<form class="form-inline my-2 mx-2 form_tutti " action="{% url 'articolo:cerca' %}" method="post" onsubmit="return ValidateRisultatiArticolo();">
 			{% csrf_token %}
 			<table>
 				<tr class="row">

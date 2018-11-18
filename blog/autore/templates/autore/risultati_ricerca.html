@@ -44,7 +44,7 @@
 	<div class="floatright col-4 mt-5 mr-5">
 		{# se vengo da tutti mostro le opzioni di ricerca per nome e cognome #}		
 		<h3 class="pl-2">Cerca un autore:</h3>
-		<form class="form-inline my-2 mx-2 form_tutti " action="{% url 'autore:cerca' %}" method="post">
+		<form class="form-inline my-2 mx-2 form_tutti " action="{% url 'autore:cerca' %}" method="post" onsubmit="return ValidateRisultatiAutore();">
 			{% csrf_token %}
 			<table>
 				<tr class="row">
