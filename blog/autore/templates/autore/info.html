@@ -17,10 +17,10 @@
     <p>Nick: {{ autore.username }}</p>
     <p>Data Registrazione: {{ autore.data_registrazione|date:"d-m-Y" }}</p>
     <p>E-Mail: <E-Mail>{{ autore.email }}</E-Mail></p>
-    <p>Biografia:</p>
-    <p><p>
-    <textarea class="multiline" rows="8" cols="50" readonly>{{ autore.bio }}</textarea>
-    </p></p>
+    <a>Biografia:</a>
+    <div class=" container multiline m-1" >
+        <textarea class="" rows="8" cols="50" readonly>{{ autore.bio }}</textarea>
+    </div>
     {# link degli articoli #}
     <h2>Articoli Scritti:</h2>
     <ul>

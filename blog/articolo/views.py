@@ -46,11 +46,13 @@ def info(request, id_articolo):
     except ObjectDoesNotExist:
         commenti = None
     template = loader.get_template('articolo/info.html')
+    
     context = {
         'articolo' : articolo,
-        'autore': autore,
+        'autore' : autore,
         'commenti' : commenti,
-        'citazioni' : articolo.cita.all()
+        'chi_cito' : articolo.cita.all(),
+        'num_chi_mi_cita' : len(Articolo.objects.filter(cita=articolo.id))
     }
     return HttpResponse(template.render(context, request))
 
@@ -161,7 +163,6 @@ def cerca(request):
             #ordino gli articoli rimasti in base alle parole
             #limito il numero dei risultati a 15 quando ranko
             parole = data.get('parole')
-            print(parole)
             if parole != '':
                 parole = parole.__str__().split()
                 #creo il vettore: campo in cui cercare
@@ -169,10 +170,8 @@ def cerca(request):
                 #creo la query
                 query = ""
                 for parola in parole:
-                    print(parola)
                     query = query + "SearchQuery('"+parola+"') & "
                 query = eval(query[:len(query)-2])
-                print(query)
                 #cerco
                 articoli_risultati = articoli_risultati.annotate(rank=SearchRank(vector, query)).order_by('-rank')
                 return render(request, 'articolo/risultati_ricerca.html', context={'articoli': articoli_risultati.all()[:15]})
@@ -197,7 +196,6 @@ def chi_mi_cita(request, id_articolo):
         'titolo': articolo.titolo,
         'articoli': Articolo.objects.filter(cita=articolo.id)
     }
-    print(Articolo.objects.filter(cita=articolo.id))
     return render(request, 'articolo/chi_mi_cita.html', context=context)
 
 #puoi votare solo se:

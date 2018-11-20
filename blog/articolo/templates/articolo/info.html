@@ -50,12 +50,12 @@
 		<div class="floatright col-6">
 			<h4>
 				<a style="font-size:20px" href="{% url 'articolo:chi_mi_cita' articolo.id %}">
-					Questo articolo e' stato citato {{ articolo.citato }} volte
+					Questo articolo e' stato citato {{ num_chi_mi_cita }} volte
 				</a>
 			</h4>
 			<h3 >Articoli Citati:</a><br>
-			{% for arti in citazioni %}
-				<a class="risultati" href="{% static 'articolo/info.html' arti.id %}">
+			{% for arti in chi_cito %}
+				<a class="risultati" href="{% url 'articolo:info' arti.id %}">
 					{{ arti.titolo }}
 				</a><br>
 			{% endfor %}
@@ -75,22 +75,25 @@
 			{% endfor %}
 		</ul>
 	</p>
-	{# da aggiungere la sezione del voto solo per utenti autenticati #}
-	{% if request.user.is_authenticated %}
-	<form  class="row form_tutti pt-3 pl-5" action="{% url 'articolo:vota' articolo.id %}" method="post">
-		{% csrf_token %}
-		<p class="col-1 pt-2">
-			<select id="voto" name="voto">
-				<option value=0>0</option>
-				<option value=1>1</option>
-				<option value=2>2</option>
-				<option value=3>3</option>
-				<option value=4>4</option>
-				<option value=5>5</option>
-			</select>
-		</p>
-		<input class="col-2 mb-3 ml-2 btn btn-outline-primary" type="submit" value="Vota" style="font-size: 15px;"/>
-	</form>
-	{% endif %}
+	{# inizio parte del voto #}
+	<div class="row pt-3">
+		<a class="col-2 ml-3" style="font-size: 20px;">Voto: {{ articolo.get_voto }}</a>
+		{% if request.user.is_authenticated %}
+		<form  class="col-6 form_tutti " action="{% url 'articolo:vota' articolo.id %}" method="post">
+			{% csrf_token %}
+			<input class=" mb-3 px-2 btn btn-outline-primary" type="submit" value="Vota" style="font-size: 15px;"/>
+			<a class="mb-3 ml-3">
+				<select id="voto" name="voto">
+					<option value=0>0</option>
+					<option value=1>1</option>
+					<option value=2>2</option>
+					<option value=3>3</option>
+					<option value=4>4</option>
+					<option value=5>5</option>
+				</select>
+			</a>			
+		</form>
+		{% endif %}
+	</div>
 </div>
 {% endblock body %}

@@ -36,22 +36,12 @@ class GenericArticoloForm(forms.ModelForm):
 		if categoria == None:
 			raise forms.ValidationError("Devi selezionare una categoria")
 		return categoria
-	"""
-	#potrei metterla in post-save
-	def aggiorna_articoli_citati(self):
-		cita = self.cleaned_data.get('cita')
-		for articolo in cita:
-			articolo.citato += 1
-			articolo.save()
-		return None
-	"""
+	
 	def clean(self):
 		data = super(GenericArticoloForm, self).clean()
 		self.clean_titolo()
 		self.clean_testo()
 		self.clean_categoria()
-		#dopo tutti i controlli, aggiorno 'citato' degli articoli che quello nuovo cita
-		#self.aggiorna_articoli_citati()
 		return data
 
 class ArticoloAdminChange(GenericArticoloForm):
@@ -129,7 +119,24 @@ class CercaArticoloForm(forms.Form):
 			min_value=0,
 			required=False)
 
-	
+#per gli amministratori
+class FormAdminCommento(forms.ModelForm):
+	id_articolo = forms.ModelChoiceField(queryset=Articolo.objects.all())
+	testo = forms.CharField(widget=forms.Textarea(attrs={'rows':10, 'cols':70}), max_length=10000)
+	commentatore = forms.CharField(max_length=20)
+
+	class Meta:
+		model = Commento
+		fields = ('id_articolo', 'testo', 'commentatore')
+
+	#controllo che lo username esista o che sia Anonimo
+	def clean_commentatore(self):
+		username = self.cleaned_data.get('commentatore')
+		if len(Autore.objects.filter(username=username)) == 0 and username != "Anonimo":
+			raise forms.ValidationError("Lo username deve appartenere a un autore esistente o essere 'Anonimo'")
+		return username
+
+#per gli utenti comuni
 class FormCommento(forms.ModelForm):
 	testo = forms.CharField(widget=forms.Textarea(attrs={'rows':10, 'cols':70}), max_length=10000)
 

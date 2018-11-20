@@ -12,6 +12,18 @@ class BaseFormAutore(forms.ModelForm):
 	class Meta:
 		model = Autore
 		fields = ('username', 'email')
+
+	def clean_username(self):
+		username = self.cleaned_data.get('username')
+		if username == "Anonimo":
+			raise forms.ValidationError("Questo username e' riservato agli utenti non registrati")
+		print(username)
+		return username
+
+	def clean(self):
+		data = super(BaseFormAutore, self).clean()
+		self.clean_username()
+		return data
 	
 
 class RegisterForm(BaseFormAutore):

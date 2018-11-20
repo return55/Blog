@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 from django.contrib.postgres.fields import ArrayField
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import post_delete, post_save, m2m_changed
 from django.dispatch.dispatcher import receiver
 
 from autore.models import Autore
@@ -15,6 +15,10 @@ CREATE SCHEMA public;
 """
 grant usage on schema public to blog;
 grant create on schema public to blog;
+"""
+"""
+.\pg_dump.exe -U blog -F c -b -v -f dump Blog     -   per copia db
+.\pg_restore.exe -h localhost -d prova -U blog -v .\dump    -   per incolla db
 """
 class LowerCaseCharField(models.CharField):
     def to_python(self, value):
@@ -51,6 +55,8 @@ class Articolo(models.Model):
         if self.numero_voti == 0:
             return 0
         return self.somma_voti / self.numero_voti
+    get_voto.boolean = False
+    get_voto.short_description = 'Voto'
 
     def get_nick_autore(self):
         return self.id_autore.username
@@ -66,18 +72,40 @@ class Articolo(models.Model):
     def __str__(self):
         return self.titolo
 
+@receiver(m2m_changed, sender=Articolo.cita.through)
+def aggiorno_citato_altri(sender, instance, action, pk_set, *args, **kwargs):
+    if action == "post_add":
+        for id in pk_set:
+            articolo = Articolo.objects.get(pk=id)
+            articolo.citato += 1
+            articolo.save()
+    elif action == "post_remove":
+        for id in pk_set:
+            articolo = Articolo.objects.get(pk=id)
+            articolo.citato -= 1
+            articolo.save()
+
+"""
 #quando elimino un articolo devo modificare il campo 'citato' degli altri: (citati - 1)
 @receiver(post_delete, sender=Articolo)
 def aggiorno_citato_altri_del(sender, instance, *args, **kwargs):
+    print("citato del")
+    print(instance.titolo)
     for articolo in instance.cita.all():
         articolo.citato -= 1
+        print(articolo)
+        articolo.save()
 
 #quando creo un articolo devo modificare il campo 'citato' degli altri: (citati + 1)
 @receiver(post_save, sender=Articolo)
 def aggiorno_citato_altri_add(sender, instance, *args, **kwargs):
+    print("citato creazione")
+    print(instance.cita.all())
     for articolo in instance.cita.all():
         articolo.citato += 1
-
+        print(articolo)
+        articolo.save()
+"""
 class Commento(models.Model):
     id_articolo = models.ForeignKey(Articolo, on_delete=models.CASCADE)
     testo = models.TextField()
@@ -88,6 +116,10 @@ class Commento(models.Model):
         unique_together = (('id_articolo', 'id'),)
         verbose_name_plural = 'Commenti'
 
+    def get_articolo_titolo(self):
+        return self.id_articolo.titolo
+    get_articolo_titolo.boolean = False
+    get_articolo_titolo.short_description = 'Titolo dell\'articolo'
 
     def __str__(self):
         return self.id_articolo.titolo + " " + self.commentatore

@@ -16,8 +16,8 @@ class UserAdmin(BaseUserAdmin):
 	fieldsets = [
 		(None, {'fields': ('username', 'password')}),
         ('Personal Info',{'fields': ('first_name', 'last_name', 'email')}),
-		('Altre', {'fields': ['bio', 'profilo_pubblico', 'data_registrazione']}),
-        ('Permissions', {'fields': ('is_admin', 'is_active', 'articoli_votati')}),
+		('Altre', {'fields': ['bio', 'profilo_pubblico', 'data_registrazione', 'articoli_votati']}),
+        ('Permissions', {'fields': ('is_admin', 'is_active')}),
 	]
 	add_fieldsets = (
         (None, {
@@ -27,7 +27,7 @@ class UserAdmin(BaseUserAdmin):
 	readonly_fields = ['data_registrazione', 'articoli_votati']
 	list_filter = ['data_registrazione']
 	list_display = ('username', 'data_registrazione', 'profilo_pubblico', 'is_admin')
-	search_fields = ('username',)
+	search_fields = ('username','first_name','last_name')
 	ordering = ('data_registrazione', 'first_name')
 	filter_horizontal = ()
 	verbose_name_plural = 'Autori'

@@ -154,7 +154,6 @@ def cerca(request):
             data = form.clean()
             autori_risultati = Autore.objects.filter(profilo_pubblico=True)
             for campo, val in data.items():
-                print(campo, "-", val, "-", sep=''  )
                 if val != None and val != '' and re.match(r'data.*', campo) is None :
                     cmd = "autori_risultati.filter("+campo.__str__()+"=val)"
                     autori_risultati = eval(cmd)
@@ -168,13 +167,11 @@ def cerca(request):
             elif data_inizio != None:
                 #ricerca  [data inizio - oggi]
                 data_fine = datetime.date.today()
-                print(data_fine)
                 cmd = "autori_risultati.filter(data_registrazione__range=[\""+data_inizio.__str__()+"\", \""+data_fine.__str__()+"\"])"
                 autori_risultati = eval(cmd)
             elif data_fine != None:
                 #ricerca [oggi - data fine]
-                data_inizio = datetime.date.today()
-                print(data_inizio)
+                data_inizio = datetime.date.today()         
                 cmd = "autori_risultati.filter(data_registrazione__range=[\""+data_inizio.__str__()+"\", \""+data_fine.__str__()+"\"])"
                 autori_risultati = eval(cmd)
 

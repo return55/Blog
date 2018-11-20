@@ -7,14 +7,14 @@
 {% endblock %} 
 
 {% block body %}
-<div class="container p-5 my-5 div-index">
-	<h1>Ricerca Avanzata</h1>
+<div class="container py-5 my-5  div-index">
+	<h1 class="mr-1 col-11">Ricerca Avanzata</h1>
 
-	<form class="col-11 form_tutti pt-3" action="{% url 'articolo:cerca' %}" method="post" onsubmit="return ValidateArticolo();">
+	<form class="col-10 form_tutti ml-4 pt-3 px-5" action="{% url 'articolo:cerca' %}" method="post" onsubmit="return ValidateArticolo();">
 		{% csrf_token %}
         {{ form.as_p }}
 		
-		<input class="col-5 py-3 mt-3  btn btn-outline-primary" type="submit" value="Cerca" style="font-size: 22px;"/>
+		<input class="col-5 py-3 ml-4 mt-3   btn btn-outline-primary" type="submit" value="Cerca" style="font-size: 22px;"/>
 	</form>
 </div>
 {% endblock body %}
